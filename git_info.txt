@@ -1,0 +1,12 @@
+Envoyer un fichier:
+
+git add NomDuFichier.extension
+git status //pour vérifier
+git commit -m "message"
+git push
+
+
+Lire un fichier:
+
+git remote
+git pull
