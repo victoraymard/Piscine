@@ -1,0 +1,81 @@
+# depslib dependency file v1.0
+1522748348 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\graph.cpp
+	"graph.h"
+
+1522845836 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\graph.h
+	<vector>
+	<map>
+	<string>
+	<memory>
+	"grman/grman.h"
+
+1522748348 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\grman.h
+	<allegro.h>
+	<string>
+	"grman_couleurs.h"
+	"coords.h"
+	"widget.h"
+
+1522748348 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\grman_couleurs.h
+
+1522748348 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\coords.h
+	<cmath>
+
+1522748348 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\widget.h
+	"grman.h"
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<allegro.h>
+
+1522748348 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\coords.cpp
+	"coords.h"
+
+1522748348 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\grman.cpp
+	<cmath>
+	<unordered_map>
+	<unordered_set>
+	<utility>
+	<string>
+	<iostream>
+	<regex>
+	"grman.h"
+	<allegro.h>
+	<png.h>
+	<loadpng.h>
+	<jpgalleg.h>
+
+1522748348 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\grman\widget.cpp
+	"widget.h"
+
+1522846328 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\main.cpp
+	"grman/grman.h"
+	<iostream>
+	"graph.h"
+
+1522846328 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\espece.cpp
+	"Espece.h"
+
+1522846328 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\espece.h
+	<string>
+	"graph.h"
+
+1522844166 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\animal.cpp
+	"Animal.h"
+
+1522844177 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\animal.h
+	"Espece.h"
+
+1522845443 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\reservoir.cpp
+	"Reservoir.h"
+
+1522845443 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\reservoir.h
+	"graph.h"
+
+1522845443 source:c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\vegetal.cpp
+	"Vegetal.h"
+
+1522845443 c:\users\pierr\downloads\graph_lib_v1\graph_lib_exemple_graph\vegetal.h
+	"Espece.h"
+
