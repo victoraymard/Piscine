@@ -17,7 +17,7 @@ int main()
 //    std::string nom1 = "txt2";
 //    g.recuperation(nom, nom1);
 
-menu();
+    menu();
     /// Vous gardez la main sur la "boucle de jeu"
     /// ( contrairement à des frameworks plus avancés )
 //    while ( !key[KEY_ESC] )
@@ -38,21 +38,22 @@ menu();
 
 void menu()
 {
-    BITMAP* fond ;
-    BITMAP* buffer ;
-    fond = load_bitmap("menu.jpg", NULL);
-    buffer = create_bitmap(SCREEN_W, SCREEN_H);
-    blit(fond, buffer, 0,0,0,0,800, 600);
-    blit(buffer, screen, 0,0,0,0,800, 600);
-
-    grman::set_pictures_path("pics");
-    bool x = false, secu = false;
-    Graph g;
-
-
-
     while ( !key[KEY_ESC] )
     {
+        BITMAP* fond ;
+        BITMAP* buffer ;
+        fond = load_bitmap("menu.jpg", NULL);
+        buffer = create_bitmap(SCREEN_W, SCREEN_H);
+        blit(fond, buffer, 0,0,0,0,800, 600);
+        blit(buffer, screen, 0,0,0,0,800, 600);
+
+        grman::set_pictures_path("pics");
+        bool x = false, secu = false;
+        Graph g;
+
+
+
+
         if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )
         {
             x = true;
@@ -60,8 +61,8 @@ void menu()
             {
                 secu = true;
                 std::string nom = "txt1";
-    std::string nom1 = "txt2";
-    g.recuperation(nom , nom1);
+                std::string nom1 = "txt2";
+                g.recuperation(nom, nom1);
             }
 
             while (x == true)

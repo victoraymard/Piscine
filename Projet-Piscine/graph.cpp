@@ -381,10 +381,8 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
     m_edges[idx] = Edge(weight, ei);
     m_edges[idx].m_from=id_vert1;
     m_edges[idx].m_to=id_vert2;
-    m_vertices[id_vert1].m_out.push_back(idx);
-    m_vertices[id_vert2].m_out.push_back(idx);
-
-
+    m_vertices[id_vert1].m_out.push_back(id_vert2);
+    m_vertices[id_vert2].m_in.push_back(id_vert1);
 }
 
 

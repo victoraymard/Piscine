@@ -169,7 +169,7 @@
 	<string>
 	"graph.h"
 
-1522860240 c:\users\victo\piscine\projet-piscine\graph.h
+1522921394 c:\users\victo\piscine\projet-piscine\graph.h
 	<vector>
 	<map>
 	<string>
@@ -188,7 +188,7 @@
 1522860240 c:\users\victo\piscine\projet-piscine\grman\coords.h
 	<cmath>
 
-1522860240 c:\users\victo\piscine\projet-piscine\grman\widget.h
+1522921394 c:\users\victo\piscine\projet-piscine\grman\widget.h
 	"grman.h"
 	<iostream>
 	<string>
@@ -199,8 +199,10 @@
 1522860240 source:c:\users\victo\piscine\projet-piscine\espece.cpp
 	"Espece.h"
 
-1522875114 source:c:\users\victo\piscine\projet-piscine\graph.cpp
+1522921394 source:c:\users\victo\piscine\projet-piscine\graph.cpp
 	"graph.h"
+	<sstream>
+	<fstream>
 
 1522860240 source:c:\users\victo\piscine\projet-piscine\grman\coords.cpp
 	"coords.h"

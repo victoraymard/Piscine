@@ -1,3 +1,3 @@
-3 0 100 136 1 Paris.jpg
-1 100 349 461 Paris.jpg
-2 40 763 140 Paris.jpg
+3 0 100 26 187 Paris.jpg
+1 100 211 530 Paris.jpg
+2 40 516 239 Paris.jpg
