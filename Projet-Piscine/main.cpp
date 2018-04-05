@@ -60,9 +60,8 @@ void menu()
             if( secu == false)
             {
                 secu = true;
-                std::string nom = "graphe1";
-                std::string nom1 = "graphe1bis";
-                g.recuperation(nom, nom1);
+                std::string nom1 = "graphe1";
+                g.recuperation(nom1);
             }
 
             while (x == true)

@@ -235,82 +235,47 @@ void Graph::make_example()
      add_interfaced_edge(8, 5, 2, 20.0);
      add_interfaced_edge(9, 3, 7, 80.0);*/
 }
-
-void Graph::recuperation(std::string nom1, std::string nom2)
+void Graph::recuperation(std::string nom1)///enlever le nom2
 {
-     m_interface = std::make_shared<GraphInterface>(50, 0, 800, 600);
+    m_interface = std::make_shared<GraphInterface>(50, 0, 800, 600);
 
-     std::string n = nom1 + ".txt" ;
+    std::string n = nom1 + ".txt" ;
 
-     std::ifstream fichier(n);
+    std::ifstream fichier(n);
 
-     if(fichier)
-   {
-       int v1 = 0;
-int idx, x,y , maxi, mini;
-double value;
-std::string pic_name;
-
-                 fichier >> v1;
-
-                 for(int i = 0 ; i < v1 ; i++)
-                 {
-                     fichier >> idx;
-                     fichier >> value;
-                     fichier >> x;
-                     fichier >>  y;
-                     fichier >>  pic_name;
-                     maxi = value + value*0.8;
-                     mini = 0;
-                     add_interfaced_vertex(idx, value, x, y, mini, maxi, pic_name);
-
-                 }
-
-
-         }
-
-   else
-   {
-      std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
-   }
-fichier.close();
-   n = nom2 + ".txt" ;
-
-   std::ifstream fichier1(n);
-    if(fichier1)
+    if(fichier)
     {
+        int v1 = 0;
+        int v2 = 0 ;
+        int idx, x,y, maxi, mini, id_vert1, id_vert2;
+        double value, weight;
+        std::string pic_name;
 
+        fichier >> v1;
+        fichier >> v2;
 
-   int v2 ;
-   int idx;
-   int id_vert1;
-    int id_vert2;
-     double weight;
-     fichier1 >> v2;
+        for(int i = 0 ; i < v1 ; i++)
+        {
+            fichier >> idx;
+            fichier >> value;
+            fichier >> x;
+            fichier >>  y;
+            fichier >>  pic_name;
+            maxi = value + value*0.8;
+            mini = 0;
+            add_interfaced_vertex(idx, value, x, y, mini, maxi, pic_name);
+        }
 
-   for (int i = 0 ; i < v2 ; i++)
-   {
-       fichier1 >> idx;
-       fichier1 >> id_vert1;
-       fichier1 >> id_vert2;
-       fichier1 >> weight;
-       add_interfaced_edge(idx,id_vert1, id_vert2, weight);
-   }
-
-
+        for (int i = 0 ; i < v2 ; i++)
+        {
+            fichier >> idx;
+            fichier >> id_vert1;
+            fichier >> id_vert2;
+            fichier >> weight;
+            add_interfaced_edge(idx,id_vert1, id_vert2, weight);
+        }
     }
-    else
-   {
-      std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
-   }
-fichier1.close();
-
-
-
-
-
-
-
+    else std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
 }
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
@@ -392,29 +357,20 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
 void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
 {
     std::string buff;
-    std::ofstream fichier("txt1.txt",std::ios::out|std::ios::trunc);
+    std::ofstream fichier("graphe1.txt",std::ios::out|std::ios::trunc);
 
-    fichier<<m_vertices.size();
-    fichier<< " ";
+    fichier << m_vertices.size()<<std::endl;
+    fichier << m_edges.size()  << std::endl;
 
 
-    for(unsigned int i=0;i<m_vertices.size();i++)
-    {
-        fichier<<i<<" "<<m_vertices[i].m_value<<" "<< m_vertices[i].m_interface->m_top_box.get_posx()<<" "<<m_vertices[i].m_interface->m_top_box.get_posy()<< " "<<m_vertices[i].m_interface->m_img.m_pic_name;
-        fichier<<std::endl;
-    }
+    for(unsigned int i=0; i<m_vertices.size(); i++)fichier<<i<<" "<<m_vertices[i].m_value<<" "
+                                                                                   << m_vertices[i].m_interface->m_top_box.get_posx()
+                                                                                   <<" "<<m_vertices[i].m_interface->m_top_box.get_posy()
+                                                                                   << " "<<m_vertices[i].m_interface->m_img.m_pic_name<<std::endl;
+
+    for(unsigned int i=0; i<m_edges.size(); i++)fichier<< i << " "<< m_edges[i].m_from<< " " << m_edges[i].m_to
+                                                                                    << " " << m_edges[i].m_weight <<std::endl;
     fichier.close();
-
-    std::ofstream fichier1("txt2.txt",std::ios::out|std::ios::trunc);
-    fichier1<<m_edges.size();
-    fichier1<<std::endl;
-
-    for(unsigned int i=0;i<m_edges.size();i++)
-    {
-        fichier1<< i << " "<< m_edges[i].m_from<< " " << m_edges[i].m_to<< " " << m_edges[i].m_weight;
-        fichier1<< std::endl;
-    }
-    fichier1.close();
 }
 
 
