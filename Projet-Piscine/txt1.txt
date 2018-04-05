@@ -1,0 +1,3 @@
+3 0 100 136 1 Paris.jpg
+1 100 349 461 Paris.jpg
+2 40 763 140 Paris.jpg

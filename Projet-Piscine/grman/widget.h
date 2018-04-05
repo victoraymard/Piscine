@@ -321,13 +321,14 @@ class WidgetVSlider : public Widget
 class WidgetImage : public Widget
 {
     protected :
-        std::string m_pic_name;
+
         int m_pic_idx = 0;
         bool m_animate = false;
         int m_animate_cpt_tempo = 0;
         int m_animate_tempo = 10;
 
     public :
+         std::string m_pic_name;
         WidgetImage(std::string pic_name="") : m_pic_name(pic_name) { m_margin=m_border=m_padding=0; reframe(); }
         virtual void draw();
 
