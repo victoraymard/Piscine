@@ -1,4 +1,7 @@
 #include "graph.h"
+#include"Animal.h"
+#include"Reservoir.h"
+#include"Vegetal.h"
 #include <sstream>
 #include <fstream>
 namespace patch
@@ -52,6 +55,14 @@ VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std:
     m_label_idx.set_message( patch::to_string(idx) );
 }
 
+void Vertex::setarc_entrant(int numero_de_larc)
+{
+    m_in.push_back(numero_de_larc);
+}
+void Vertex::setarc_sortant(int numero_de_larc)
+{
+    m_out.push_back(numero_de_larc);
+}
 
 /// Gestion du Vertex avant l'appel à l'interface
 void Vertex::pre_update()
@@ -374,3 +385,97 @@ void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
 }
 
 
+void Graph::remplissagemap(std::string& path)  /// remplissage de la map de sommet à partir dun fichier du type reseau trophique1.txt
+{                                              /// il faut absolument mettre | dans chaque ligne entre les arcs entrants et sortants sinon on a une boucle infini
+    std::vector<Vertex> vecteur_de_sommet_transitoire;
+    std::string buffer;
+    std::vector<std::string> info;
+    std::ifstream file(path, std::ios::in);
+
+    if(file)
+    {
+        getline(file, buffer, '-');
+        for(int i = 0; getline(file, buffer, '-'); i++)
+        {
+            if(buffer.find("\n") <= buffer.size())
+            {
+
+                    if(info[0]=="A")
+                    {
+                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str()),value3=atoi(info[4].c_str());
+                        Animal animal;
+                        animal.setnom(info[1]);
+                        animal.setnombre_individus(value1);
+                        animal.setcapacite_de_portage(value2);
+                        animal.setrythme_de_croissance(value3);
+                        int k=5;
+                        while(info[k]!="|")
+                        {
+                            int value=atoi(info[k].c_str());
+                            animal.setarc_entrant(value);
+                            k=k+1;
+                        }
+                        for(unsigned int i=k; i<info.size();i++)
+                                {
+                                    int val=atoi(info[i].c_str());
+                                    animal.setarc_sortant(val);
+                                }
+                     vecteur_de_sommet_transitoire.push_back(animal);
+                    }
+                   if(info[0]=="V")
+                    {
+                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str()),value3=atoi(info[4].c_str());
+                        Vegetal vegetal;
+                        vegetal.setnom(info[1]);
+                        vegetal.setnombre_individus(value1);
+                        vegetal.setcapacite_de_portage(value2);
+                        vegetal.setrythme_de_croissance(value3);
+                        unsigned int i=5;
+                        while(info[i]!="|")
+                        {
+                            int value=atoi(info[i].c_str());
+                            vegetal.setarc_entrant(value);
+                            i=i+1;
+                        }
+                        for(unsigned int p=i; i<info.size();i++)
+                                {
+                                    int val=atoi(info[p].c_str());
+                                    vegetal.setarc_sortant(val);
+                                }
+                     vecteur_de_sommet_transitoire.push_back(vegetal);
+                    }
+                    if(info[0]=="R")
+                    {
+                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str()),value3=atoi(info[4].c_str());
+                        Reservoir reservoir;
+                        reservoir.setnom(info[1]);
+                        reservoir.setbiomasse(value1);
+                        reservoir.setcapacite_de_portage(value2);
+                        reservoir.setrythme_de_croissance(value3);
+                        int j=5;
+                        while(info[j]!="|")
+                        {
+                            int value=atoi(info[j].c_str());
+                            reservoir.setarc_entrant(value);
+                            j=j+1;
+                        }
+                        for(unsigned int i=j; i<info.size();i++)
+                                {
+                                    int val=atoi(info[i].c_str());
+                                    reservoir.setarc_sortant(val);
+                                }
+                     vecteur_de_sommet_transitoire.push_back(reservoir);
+                    }
+
+
+            }
+        }
+    }
+    else{std::cout<<"Probleme ouverture fichier"<<std::endl;
+    }
+
+    for(unsigned int y=0; y<vecteur_de_sommet_transitoire.size();y++)
+    {
+      m_vertices[y]=vecteur_de_sommet_transitoire[y];
+    }
+}

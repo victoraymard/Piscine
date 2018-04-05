@@ -165,6 +165,8 @@ class Vertex
         {
             return m_value;
         }
+        void setarc_entrant(int numero_de_larc);
+        void setarc_sortant(int numero_de_larc);
 };
 
 
@@ -313,6 +315,8 @@ class Graph
         void update();
         void recuperation(std::string nom);
         void sauvegarde(std::map<int, Vertex> m_vertices);
+
+        void remplissagemap(std::string& path);
 };
 
 
