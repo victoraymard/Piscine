@@ -16,7 +16,7 @@ template < typename T > std::string to_string( const T& n )
 ****************************************************/
 
 /// Le constructeur met en place les éléments de l'interface
-VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, int pic_idx)
+VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std::string pic_name, int pic_idx)
 {
     // La boite englobante
     m_top_box.set_pos(x, y);
@@ -25,7 +25,7 @@ VertexInterface::VertexInterface(int idx, int x, int y, std::string pic_name, in
 
     // Le slider de réglage de valeur
     m_top_box.add_child( m_slider_value );
-    m_slider_value.set_range(0.0, 100.0);  // Valeurs arbitraires, à adapter...
+    m_slider_value.set_range(mini, maxi);  // Valeurs arbitraires, à adapter...
     m_slider_value.set_dim(20,80);
     m_slider_value.set_gravity_xy(grman::GravityX::Left, grman::GravityY::Up);
 
@@ -158,7 +158,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
     m_top_box.add_child(m_main_box);
     m_main_box.set_dim(908,720);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
-    m_main_box.set_bg_color(BLANCJAUNE);
+    m_main_box.set_bg_color(BLEUCLAIR);
 }
 
 
@@ -172,7 +172,7 @@ void Graph::make_example()
     m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
 
     std::ifstream fichier("graphes1.txt",std::ios::in);
-    int nbarrette,nbsommet,nsommet,x,y;
+    int nbarrette,nbsommet,nsommet,x,y, maxi;
     float nombre;
     std::string nom;
     if (fichier)
@@ -186,7 +186,8 @@ void Graph::make_example()
             fichier>>x;
             fichier>>y;
             fichier>>nom;
-            add_interfaced_vertex(nsommet,nombre,x,y,nom);
+            maxi = nombre + nombre*0.8;
+            add_interfaced_vertex(nsommet,nombre,x,y, 0, maxi, nom);
 
         }
         fichier.close();
@@ -246,7 +247,7 @@ void Graph::recuperation(std::string nom1, std::string nom2)
      if(fichier)
    {
        int v1 = 0;
-int idx, x,y ;
+int idx, x,y , maxi, mini;
 double value;
 std::string pic_name;
 
@@ -259,7 +260,9 @@ std::string pic_name;
                      fichier >> x;
                      fichier >>  y;
                      fichier >>  pic_name;
-                     add_interfaced_vertex(idx, value, x, y, pic_name);
+                     maxi = value + value*0.8;
+                     mini = 0;
+                     add_interfaced_vertex(idx, value, x, y, mini, maxi, pic_name);
 
                  }
 
@@ -346,7 +349,7 @@ void Graph::update()
 }
 
 /// Aide à l'ajout de sommets interfacés
-void Graph::add_interfaced_vertex(int idx, double value, int x, int y, std::string pic_name, int pic_idx )
+void Graph::add_interfaced_vertex(int idx, double value, int x, int y, int mini, int maxi, std::string pic_name, int pic_idx )
 {
     if ( m_vertices.find(idx)!=m_vertices.end() )
     {
@@ -354,7 +357,7 @@ void Graph::add_interfaced_vertex(int idx, double value, int x, int y, std::stri
         throw "Error adding vertex";
     }
     // Création d'une interface de sommet
-    VertexInterface *vi = new VertexInterface(idx, x, y, pic_name, pic_idx);
+    VertexInterface *vi = new VertexInterface(idx, x, y, mini, maxi, pic_name, pic_idx);
     // Ajout de la top box de l'interface de sommet
     m_interface->m_main_box.add_child(vi->m_top_box);
     // On peut ajouter directement des vertices dans la map avec la notation crochet :

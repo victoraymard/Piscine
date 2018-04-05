@@ -1,0 +1,11 @@
+10
+0 2300       20  30 baleine.bmp
+1 60000      500 30  orque.bmp
+2 30000000   450 350 phoque.bmp
+3 300000     700 220 leopard_des_mers.bmp
+4 3600000    250 200 manchot_adelie.bmp
+5 100000000  750 480 calmar.bmp
+6 65000000   20  350 krill.bmp
+7 1000000    200 480 zooplancton_carnivore.bmp
+8 1000000    500 600 zooplancton_herbivore.bmp
+9 1000000000 20  600 phytoplancton.bmp
