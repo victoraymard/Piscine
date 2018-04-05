@@ -46,3 +46,19 @@ void Espece::setnom(std::string nom)
 {
     m_nom=nom;
 }
+///METHODS
+void Espece::refreshnombre_individus()
+{
+    m_nombre_individus=m_nombre_individus+m_rythme_de_croissance*m_nombre_individus*(1-(m_nombre_individus/m_capacite_de_portage));
+}
+void Espece::def_capacite_de_portage(std::vector<float>vecteur_decoefficient, std::vector<int>vecteur_des_nbr_individus_predecesseurs)
+{
+    m_capacite_de_portage=0;
+    if (vecteur_decoefficient.size()==m_in.size() && vecteur_des_nbr_individus_predecesseurs.size()==m_in.size())
+    {
+        for(unsigned int k=0;k<vecteur_decoefficient.size();k++)
+        {
+            m_capacite_de_portage=m_capacite_de_portage+vecteur_decoefficient[k]*vecteur_des_nbr_individus_predecesseurs[k];
+        }
+    }
+}

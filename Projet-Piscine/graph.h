@@ -132,7 +132,7 @@ class Vertex
     friend class Edge;
     friend class EdgeInterface;
 
-    private :
+    protected :
         /// liste des indices des arcs arrivant au sommet : accès aux prédécesseurs
         std::vector<int> m_in;
 
