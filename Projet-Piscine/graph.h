@@ -148,6 +148,8 @@ class Vertex
         /// un exemple de donnée associée à l'arc, on peut en ajouter d'autres...
         double m_value;
 
+        bool m_marque; /// Pour le BFS apparemment ...
+
         /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
         std::shared_ptr<VertexInterface> m_interface = nullptr;
 
@@ -321,9 +323,10 @@ class Graph
         void update();
         void recuperation(std::string nom);
         void sauvegarde(std::map<int, Vertex> m_vertices);
-        void remplissagemap(std::string& path);
+        void remplissagemap(std::string path);
         void test_remove_edge(int eidx);
         void enleversommet(int idx);
+        void k_connexite();
 };
 
 

@@ -416,7 +416,7 @@ void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
 }
 
 
-void Graph::remplissagemap(std::string& path)  /// remplissage de la map de sommet à partir dun fichier du type reseau trophique1.txt
+void Graph::remplissagemap(std::string path)  /// remplissage de la map de sommet à partir dun fichier du type reseau trophique1.txt
 {                                              /// il faut absolument mettre | dans chaque ligne entre les arcs entrants et sortants sinon on a une boucle infini
     std::vector<Vertex> vecteur_de_sommet_transitoire;
     std::string buffer;
@@ -430,10 +430,10 @@ void Graph::remplissagemap(std::string& path)  /// remplissage de la map de somm
         {
             if(buffer.find("\n") <= buffer.size())
             {
-
                     if(info[0]=="A")
                     {
-                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str()),value3=atoi(info[4].c_str());
+                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str());
+                        float value3=strtof(info[4].c_str(),0);
                         Animal animal;
                         animal.setnom(info[1]);
                         animal.setnombre_individus(value1);
@@ -455,7 +455,8 @@ void Graph::remplissagemap(std::string& path)  /// remplissage de la map de somm
                     }
                    if(info[0]=="V")
                     {
-                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str()),value3=atoi(info[4].c_str());
+                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str());
+                        float value3=strtof(info[4].c_str(),0);
                         Vegetal vegetal;
                         vegetal.setnom(info[1]);
                         vegetal.setnombre_individus(value1);
@@ -477,7 +478,8 @@ void Graph::remplissagemap(std::string& path)  /// remplissage de la map de somm
                     }
                     if(info[0]=="R")
                     {
-                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str()),value3=atoi(info[4].c_str());
+                        int value1=atoi(info[2].c_str()),value2=atoi(info[3].c_str());
+                        float value3=strtof(info[4].c_str(),0);
                         Reservoir reservoir;
                         reservoir.setnom(info[1]);
                         reservoir.setbiomasse(value1);
@@ -497,10 +499,14 @@ void Graph::remplissagemap(std::string& path)  /// remplissage de la map de somm
                                 }
                      vecteur_de_sommet_transitoire.push_back(reservoir);
                     }
-
+                info.erase(info.begin(), info.end());
+                i = 0;
 
             }
+            else {info.push_back(buffer);
+            }
         }
+        file.close();
     }
     else{std::cout<<"Probleme ouverture fichier"<<std::endl;
     }
@@ -589,6 +595,40 @@ void Graph::enleversommet(int vidx)
 
 
 //    ;
+
+}
+
+
+
+
+
+void Graph::k_connexite()
+{
+
+    std::map<int,Vertex>map_de_transition=m_vertices;
+//    std::vector<int> vect_reference=BFS(map_de_transition);
+    for(std::map<int,Vertex>::iterator it=map_de_transition.begin(); it!=map_de_transition.end();it++)
+    {
+     map_de_transition.erase(it->first);
+    // std::vector<int> vect=BFS(map_de_transition);
+    // algo de tri pour faire en sorte que les 2 soient rangés pareil
+    //on ajoute le sommet effacé dans le premoer
+    // on regarde sils sont egaux
+    //if vect_reference==vect
+    //on stock : it->first
+    // on incrémente un compteur
+     // else
+     // on affiche it-> first
+     //"il suffit d'enlever le sommet it -> first pour que le graphe ne soit plus connexe"
+     ///BFS SUR LA NOUVELLE MAP DE TRANSITION
+     /// SI ON TROUVE LA MEME COMPOSANTE CONNEXE (EXCEPTE LE SOMMET QUON A ERASE)
+     /// ON CONTINUE
+     /// ON LE STOCK
+     /// ON ERASE UN AUTRE SOMMET DE MAP DE TRANSITION
+     ///SINON ON NOTE LE SOMMET QUON A ERASE : ON LE STOCK ON
+     ///
+
+    }
 
 }
 
