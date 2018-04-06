@@ -119,6 +119,7 @@ class VertexInterface
         grman::WidgetButton m_bouton1;
 
         int m_idx;
+
     public :
 
         // Le constructeur met en place les éléments de l'interface

@@ -51,18 +51,18 @@ void menu()
         bool x = false, secu = false;
         Graph g;
 
-
-
-
-        if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )
-        {
-            x = true;
-            if( secu == false)
+if( secu == false)
             {
                 secu = true;
                 std::string nom1 = "graphe1";
                 g.recuperation(nom1);
             }
+
+
+        if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )
+        {
+            x = true;
+
 
             while (x == true)
             {

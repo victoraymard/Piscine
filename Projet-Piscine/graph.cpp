@@ -22,7 +22,9 @@ template < typename T > std::string to_string( const T& n )
 VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std::string pic_name, int pic_idx)
 {
     m_idx = idx;
-    // La boite englobante
+
+
+         // La boite englobante
     m_top_box.set_pos(x, y);
     m_top_box.set_dim(130, 100);
     m_top_box.set_moveable();
@@ -62,6 +64,8 @@ VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std:
 
     m_bouton1.add_child( m_msg );
     m_msg.set_message("delete");
+
+
 }
 
 void Vertex::setarc_entrant(int numero_de_larc)
@@ -278,7 +282,6 @@ void Graph::recuperation(std::string nom1)///enlever le nom2
         int idx, x,y, maxi, mini, id_vert1, id_vert2;
         double value, weight;
         std::string pic_name;
-
         fichier >> v1;
         fichier >> v2;
 
@@ -342,16 +345,15 @@ void Graph::update()
 
         }
 
-    if (key[KEY_B])
-    {
+
+
         sauvegarde(m_vertices);
-    }
 
     delete x;
 }
 
 /// Aide à l'ajout de sommets interfacés
-void Graph::add_interfaced_vertex(int idx, double value, int x, int y, int mini, int maxi, std::string pic_name, int pic_idx )
+void Graph::add_interfaced_vertex( int idx, double value, int x, int y, int mini, int maxi, std::string pic_name, int pic_idx )
 {
     if ( m_vertices.find(idx)!=m_vertices.end() )
     {
@@ -396,17 +398,20 @@ void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
     std::string buff;
     std::ofstream fichier("graphe1.txt",std::ios::out|std::ios::trunc);
 
+    std::map<int, Vertex>::iterator it;
+    std::map<int, Edge>::iterator it1;
+
     fichier << m_vertices.size()<<std::endl;
     fichier << m_edges.size()  << std::endl;
 
 
-    for(unsigned int i=0; i<m_vertices.size(); i++)fichier<<i<<" "<<m_vertices[i].m_value<<" "
-                                                                                   << m_vertices[i].m_interface->m_top_box.get_posx()
-                                                                                   <<" "<<m_vertices[i].m_interface->m_top_box.get_posy()
-                                                                                   << " "<<m_vertices[i].m_interface->m_img.m_pic_name<<std::endl;
+    for(it = m_vertices.begin(); it != m_vertices.end(); it++)fichier<<it->first<<" "<<m_vertices[it->first].m_value<<" "
+                                                                                   << m_vertices[it->first].m_interface->m_top_box.get_posx()
+                                                                                   <<" "<<m_vertices[it->first].m_interface->m_top_box.get_posy()
+                                                                                   << " "<<m_vertices[it->first].m_interface->m_img.m_pic_name<<  std::endl;
 
-    for(unsigned int i=0; i<m_edges.size(); i++)fichier<< i << " "<< m_edges[i].m_from<< " " << m_edges[i].m_to
-                                                                                    << " " << m_edges[i].m_weight <<std::endl;
+    for(it1 = m_edges.begin(); it1 != m_edges.end(); it1++)fichier<< it1->first << " "<< m_edges[it1->first].m_from<< " " << m_edges[it1->first].m_to
+                                                                                    << " " << m_edges[it1->first].m_weight <<std::endl;
     fichier.close();
 }
 
@@ -571,7 +576,20 @@ void Graph::enleversommet(int vidx)
     }
 
     if (m_interface && remver.m_interface)
-        m_interface->m_main_box.remove_child (remver.m_interface->m_top_box);
+    {
+        m_interface->m_main_box.remove_child( remver.m_interface->m_top_box );
+        m_vertices.erase(vidx);
+
+    }
+
+
+
+
+
+
+
+//    ;
 
 }
+
 
