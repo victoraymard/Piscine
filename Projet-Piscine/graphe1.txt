@@ -1,26 +1,7 @@
-10
-14
-0 2300       20  30 baleine.bmp
-1 60000      500 30  orque.bmp
-2 30000000   450 350 phoque.bmp
-3 300000     700 220 leopard_des_mers.bmp
-4 3600000    250 200 manchot_adelie.bmp
-5 100000000  750 480 calmar.bmp
-6 65000000   20  350 krill.bmp
-7 1000000    200 480 zooplancton_carnivore.bmp
-8 1000000    500 600 zooplancton_herbivore.bmp
-9 1000000000 20  600 phytoplancton.bmp
-0  6 0 50
-1  6 2 50
-2  6 4 75
-3  6 3 25
-4  6 5 25
-5  9 6 25
-6  9 8 0
-7  8 5 100
-8  5 3 20
-9  3 1 80
-10 2 3 80
-11 4 3 80
-12 8 7 80
-13 7 6 80
+3
+2
+5 1e+008 748 478 calmar.bmp
+8 1e+006 183 558 zooplancton_herbivore.bmp
+9 1e+009 61 417 phytoplancton.bmp
+6 9 8 0
+7 8 5 100

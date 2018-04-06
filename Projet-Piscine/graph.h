@@ -115,11 +115,17 @@ class VertexInterface
         // Une boite pour le label précédent
         grman::WidgetText m_box_label_idx;
 
+        grman::WidgetText m_msg;
+        grman::WidgetButton m_bouton1;
+
+        int m_idx;
+
     public :
 
         // Le constructeur met en place les éléments de l'interface
         // voir l'implémentation dans le .cpp
         VertexInterface(int idx, int x, int y, int mini, int maxi, std::string pic_name="", int pic_idx=0);
+        int getidx();
 };
 
 
@@ -142,6 +148,8 @@ class Vertex
         /// un exemple de donnée associée à l'arc, on peut en ajouter d'autres...
         double m_value;
 
+        bool m_marque; /// Pour le BFS apparemment ...
+
         /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
         std::shared_ptr<VertexInterface> m_interface = nullptr;
 
@@ -160,11 +168,13 @@ class Vertex
         /// le pre_update et post_update de Vertex (pas directement la boucle de jeu)
         /// Voir l'implémentation Graph::update dans le .cpp
         void pre_update();
-        void post_update();
+        void post_update(int *x);
         double getvalue()
         {
             return m_value;
         }
+        void setarc_entrant(int numero_de_larc);
+        void setarc_sortant(int numero_de_larc);
 };
 
 
@@ -313,6 +323,10 @@ class Graph
         void update();
         void recuperation(std::string nom);
         void sauvegarde(std::map<int, Vertex> m_vertices);
+        void remplissagemap(std::string path);
+        void test_remove_edge(int eidx);
+        void enleversommet(int idx);
+        void k_connexite();
 };
 
 
