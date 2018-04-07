@@ -302,6 +302,9 @@ private :
     grman::WidgetButton m_bouton5;
     grman::WidgetText m_bouton5_label;
 
+    grman::WidgetButton m_bouton6;
+    grman::WidgetText m_bouton6_label;
+
     // A compléter éventuellement par des widgets de décoration ou
     // d'édition (boutons ajouter/enlever ...)
 
@@ -315,52 +318,6 @@ public :
 
 class Graph
 {
-<<<<<<< HEAD
-    private :
-
-        /// La "liste" des arêtes
-        std::map<int, Edge> m_edges;
-
-        /// La liste des sommets
-        std::map<int, Vertex> m_vertices;
-
-        /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
-        std::shared_ptr<GraphInterface> m_interface = nullptr;
-
-
-    public:
-
-        /// Les constructeurs sont à compléter selon vos besoin...
-        /// Ici on ne donne qu'un seul constructeur qui peut utiliser une interface
-        Graph (GraphInterface *interface=nullptr) :
-            m_interface(interface)  {  }
-
-        void add_interfaced_vertex(int idx, double value, int x, int y, int mini, int maxi, std::string thing_name, std::string pic_name, int pic_idx=0 );
-        void add_interfaced_edge(int idx, int vert1, int vert2, double weight=0);
-
-        /// Méthode spéciale qui construit un graphe arbitraire (démo)
-        /// Voir implémentation dans le .cpp
-        /// Cette méthode est à enlever et remplacer par un système
-        /// de chargement de fichiers par exemple.
-        void make_example();
-
-
-        /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
-        void update(std::string nom);
-        void recuperation(std::string nom);
-        void sauvegarde(std::map<int, Vertex> m_vertices, std::string nom);
-        void remplissagemap(std::string path);
-        void test_remove_edge(int eidx);
-        void enleversommet(int idx);
-        int k_connexite();
-        void clear_map();
-        void add_edge();
-        void kosaraju();
-        void bfs();
-        void composante_fortement_connexe();
-        std::vector<int> BFS();
-        void ajoutsommet();
-=======
 private :
 
     /// La "liste" des arêtes
@@ -394,21 +351,23 @@ public:
     void update(std::string nom);
     void recuperation(std::string nom);
     void sauvegarde(std::map<int, Vertex> m_vertices, std::string nom);
+    void sauvegarde_bis(std::map<int, Vertex> m_vertices);
     void remplissagemap(std::string path);
     void test_remove_edge(int eidx);
     void enleversommet(int idx);
-    void k_connexite();
+    int k_connexite();
     void clear_map();
     void add_edge();
-    void kosaraju();
+    //void kosaraju();
     void bfs();
-    void composante_fortement_connexe();
+    //void composante_fortement_connexe();
     std::vector<int> BFS();
     void ajoutsommet();
     float calcul_K(int x);
     float calcul_Coeff(int idx);
     void evol_pop();
->>>>>>> guillaume
+    void forte_conexite();
+
 
 };
 
