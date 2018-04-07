@@ -249,7 +249,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
     ///bouton 5
     m_boite_boutons.add_child(m_bouton5);
-     m_bouton5.set_frame(0,135,78,44);
+    m_bouton5.set_frame(0,135,78,44);
     m_bouton5.set_bg_color(BLEU);
 
     m_bouton5.add_child(m_bouton5_label);
@@ -335,13 +335,13 @@ void Graph::update(std::string nom)
     /// BOUTONS
 
 
-        //sauvegarder
+    //sauvegarder
 //        sauvegarde(m_vertices, nom);
 
     if (m_interface->m_bouton2.clicked()) ///ne marche pas trop
     {
         //changer de réseau
-      key[KEY_R]=true;
+        key[KEY_R]=true;
 
     }
     if (m_interface->m_bouton3.clicked())
@@ -664,6 +664,48 @@ void Graph::clear_map()
 }
 
 
+void Graph::ajoutsommet()
+{
+
+    std::map<int, Vertex>::iterator it;
+    std::set<int>::iterator it1;
+    std::set<int> temp;
+    int idx = 0;
+    double value;
+    int x;
+    int y;
+    std::string thing_name;
+    std::string  pic_name;
+
+
+    for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+    {
+        temp.insert(m_vertices[it->first].m_interface->getidx());
+
+    }
+
+    it1 = temp.end();
+
+    idx = (*it1)+1;
+
+
+    std::cout << "veuillez renter les coord du sommet, sa valeur et son nom" << std::endl;
+    std::cin >> x >> y >> value >> thing_name;
+    int maxi = value + value*0.8;
+    int mini = 0;
+
+    pic_name = thing_name + ".bmp";
+
+
+
+
+    add_interfaced_vertex(idx, value,x,y,mini, maxi, thing_name, pic_name);
+
+
+    temp.erase(temp.begin(),temp.end());
+
+
+}
 
 
 
@@ -894,8 +936,8 @@ void Graph::composante_fortement_connexe()
         tabSecondPassage.push_back(-1);
         composanteFortementConnexe.push_back(-1);
     }
-  //  tabPremierPassage[s]=1;
-   // tabSecondPassage[s]=1;
+    //  tabPremierPassage[s]=1;
+    // tabSecondPassage[s]=1;
 
 }
 
@@ -903,29 +945,29 @@ void Graph::composante_fortement_connexe()
 std::vector<int> Graph::BFS()
 {
     std::vector<int> vecteur;
-    for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end();it++)
-     {
-       it->second.m_marque=false;
-     }
+    for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end(); it++)
+    {
+        it->second.m_marque=false;
+    }
     std::queue<int> file;
     auto it = m_vertices.begin();
     int s = it->first;
     file.push(s);
     while(!file.empty())
     {
-         s = file.front();
-         vecteur.push_back(s);
+        s = file.front();
+        vecteur.push_back(s);
         std::cout <<s<<" ";  /// le stocker ici
         file.pop();
-        for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end();itera++)  ///parcourt des adjacents de s
+        for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end(); itera++) ///parcourt des adjacents de s
         {
             if(itera->second.m_from==s)     /// on regarde les adjacents de s
             {
-               if(m_vertices[itera->second.m_to].m_marque==false)       /// on regarde sils sont pas marqués
-               {
-                m_vertices[itera->second.m_to].m_marque=true;
-                file.push(itera->second.m_to);
-               }
+                if(m_vertices[itera->second.m_to].m_marque==false)       /// on regarde sils sont pas marqués
+                {
+                    m_vertices[itera->second.m_to].m_marque=true;
+                    file.push(itera->second.m_to);
+                }
             }
             if (itera->second.m_to==s)
             {
@@ -943,45 +985,3 @@ std::vector<int> Graph::BFS()
 
 }
 
-void Graph::ajoutsommet()
-{
-
-    std::map<int, Vertex>::iterator it;
-    std::set<int>::iterator it1;
-    std::set<int> temp;
-     int idx = 0;
-            double value;
-            int x;
-            int y;
-            std::string thing_name;
-            std::string  pic_name;
-
-
-    for(it = m_vertices.begin(); it != m_vertices.end(); it++)
-    {
-        temp.insert(m_vertices[it->first].m_interface->getidx());
-
-    }
-
-it1 = temp.end();
-
-   idx = (*it1)+1;
-
-
-   std::cout << "veuillez renter les coord du sommet, sa valeur et son nom" << std::endl;
-   std::cin >> x >> y >> value >> thing_name;
-int maxi = value + value*0.8;
-             int mini = 0;
-
-   pic_name = thing_name + ".bmp";
-
-
-
-
-    add_interfaced_vertex(idx, value,x,y,mini, maxi , thing_name, pic_name);
-
-
-    temp.erase(temp.begin(),temp.end());
-
-
-}

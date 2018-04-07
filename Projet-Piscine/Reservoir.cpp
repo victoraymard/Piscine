@@ -57,7 +57,7 @@ void Reservoir::def_capacite_de_portage(std::vector<float>vecteur_decoefficient,
     m_capacite_de_portage=0;
     if (vecteur_decoefficient.size()==m_in.size() && vecteur_des_nbr_individus_predecesseurs.size()==m_in.size())
     {
-        for(unsigned int k=0;k<vecteur_decoefficient.size();k++)
+        for(unsigned int k=0; k<vecteur_decoefficient.size(); k++)
         {
             m_capacite_de_portage=m_capacite_de_portage+vecteur_decoefficient[k]*vecteur_des_nbr_individus_predecesseurs[k];
         }

@@ -1,6 +1,6 @@
 11
 13
-0 0 57 192 baleine baleine.bmp
+0 55.4 57 192 baleine baleine.bmp
 1 0 33 32 orque orque.bmp
 2 0 188 54 phoque phoque.bmp
 3 0 306 193 leopard_des_mers leopard_des_mers.bmp

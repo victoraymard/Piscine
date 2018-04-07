@@ -346,7 +346,8 @@ void WidgetEdge::draw()
     if ( !(m_attach[0] && m_attach[1] ) )
         return;
 
-    Coords p[2] {
+    Coords p[2]
+    {
         m_attach[0]->get_center_abs_pos(),
         m_attach[1]->get_center_abs_pos()
     };
