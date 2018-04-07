@@ -74,10 +74,15 @@ while ( !key[KEY_ESC] )
       ///---------------------------------------------------------------------
 
      x= false;
+
+    std::string nom = " ";
         secu=false;
 
         if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )///graphe1
         {
+            key[KEY_R] = false;
+
+
             x = true;
             if( secu == false)
             {
@@ -85,9 +90,28 @@ while ( !key[KEY_ESC] )
                 g.recuperation(nom1);
 
             }
+             while (x == true)
+            {
+
+
+
+                g.update(nom1);
+                grman::mettre_a_jour();
+
+
+                if(key[KEY_R] )
+                {
+                    x= false;
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.clear_map();
+                }
+
+            }
         }
             else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 350< mouse_y && mouse_y < 380 )///graphe2
         {
+              key[KEY_R] = false;
             x = true;
             if( secu == false)
             {
@@ -95,22 +119,12 @@ while ( !key[KEY_ESC] )
                 g.recuperation(nom2);
 
             }
-        }
-           else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
-        {
-            x = true;
-            if( secu == false)
-            {
-                secu = true;
-                g.recuperation(nom3);
-            }
-        }
-///-------------------------------------------------------------
-            while (x == true)
+             while (x == true)
             {
 
 
-                g.update();
+
+                g.update(nom2);
                 grman::mettre_a_jour();
 
 
@@ -123,6 +137,37 @@ while ( !key[KEY_ESC] )
                 }
 
             }
+        }
+           else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
+        {
+              key[KEY_R] = false;
+            x = true;
+            if( secu == false)
+            {
+                secu = true;
+                g.recuperation(nom3);
+            }
+             while (x == true)
+            {
+
+
+
+                g.update(nom3);
+                grman::mettre_a_jour();
+
+
+                if(key[KEY_R])
+                {
+                    x= false;
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.clear_map();
+                }
+
+            }
+        }
+///-------------------------------------------------------------
+
 
 
         }

@@ -24,6 +24,7 @@ template < typename T > std::string to_string( const T& n )
 VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std::string thing_name,std::string pic_name, int pic_idx)
 {
     m_idx = idx;
+    m_thing = thing_name;
 
 
     // La boite englobante
@@ -75,6 +76,7 @@ VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std:
     m_nom_animal.add_child(m_nom_animal_label);
     m_nom_animal_label.set_message(thing_name);
     m_nom_animal_label.set_color(MARRONSOMBRE);
+
 
 
 
@@ -191,16 +193,16 @@ void Edge::post_update()
 /// éléments qui seront ensuite ajoutés lors de la mise ne place du Graphe
 GraphInterface::GraphInterface(int x, int y, int w, int h)
 {
-    m_top_box.set_dim(1000,740);
+    m_top_box.set_dim(800,600);
     m_top_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
 
     m_top_box.add_child(m_tool_box);
     m_tool_box.set_dim(80,720);
     m_tool_box.set_gravity_xy(grman::GravityX::Left, grman::GravityY::Up);
-    m_tool_box.set_bg_color(BLANCBLEU);
+    m_tool_box.set_bg_color(ROUGE);
 
     m_top_box.add_child(m_main_box);
-    m_main_box.set_dim(908,720);
+    m_main_box.set_dim(740,600);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
     m_main_box.set_bg_color(BLEUCLAIR);
 
@@ -249,7 +251,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
 void Graph::recuperation(std::string nom1)
 {
-    m_interface = std::make_shared<GraphInterface>(50, 0, 800, 600);
+    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
 
     std::string n = nom1 + ".txt" ;
 
@@ -292,8 +294,9 @@ void Graph::recuperation(std::string nom1)
 }
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
-void Graph::update()
+void Graph::update(std::string nom)
 {
+
     int *x = new int;
     *x = -1;
     if (!m_interface)
@@ -314,22 +317,21 @@ void Graph::update()
 
 
     /// TOUCHES CLAVIER
-    if (key[KEY_B])
-    {
-        sauvegarde(m_vertices);
-    }
+//    if (key[KEY_B])
+//    {
+//        sauvegarde(m_vertices);
+//    }
 
     /// BOUTONS
 
-    if (m_interface->m_bouton1.clicked())
-    {
+
         //sauvegarder
-        sauvegarde(m_vertices);
-    }
+        sauvegarde(m_vertices, nom);
+
     if (m_interface->m_bouton2.clicked()) ///ne marche pas trop
     {
         //changer de réseau
-        key[KEY_R]=true;
+      key[KEY_R]=true;
 
     }
     if (m_interface->m_bouton3.clicked())
@@ -395,14 +397,12 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
 }
 
 
-void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
+void Graph::sauvegarde(std::map<int, Vertex> m_vertices, std::string nom)
 {
     std::string buff;
 
-    std::string nomFichier = "";
-    std::cout <<"quel est le nom du fichier ?\n";
-    std::cin >> nomFichier;
-    std::ofstream fichier(nomFichier+".txt",std::ios::out|std::ios::trunc);
+
+    std::ofstream fichier(nom+".txt",std::ios::out|std::ios::trunc);
 
     std::map<int, Vertex>::iterator it;
     std::map<int, Edge>::iterator it1;
@@ -414,7 +414,7 @@ void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
     for(it = m_vertices.begin(); it != m_vertices.end(); it++)
         fichier<<it->first<<" "<<m_vertices[it->first].m_value<<" "
                << m_vertices[it->first].m_interface->m_top_box.get_posx()
-               <<" "<<m_vertices[it->first].m_interface->m_top_box.get_posy()
+               <<" "<<m_vertices[it->first].m_interface->m_top_box.get_posy() << " " << m_vertices[it->first].m_interface->getthing()
                << " "<<m_vertices[it->first].m_interface->m_img.m_pic_name<<  std::endl;
 
     for(it1 = m_edges.begin(); it1 != m_edges.end(); it1++)
@@ -923,4 +923,10 @@ std::vector<int> Graph::BFS()
     } ///checker si tous les sommets sont marqués
     return vecteur;
 
+}
+
+void Graph::suppression()
+{
+    m_vertices.erase(m_vertices.begin(), m_vertices.end());
+    m_edges.erase(m_edges.begin(),m_edges.end());
 }
