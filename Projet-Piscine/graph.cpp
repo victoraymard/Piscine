@@ -388,11 +388,11 @@ void Graph::update(std::string nom)
 //        calcul_Coeff(*y);
 //    }
 
-evol_pop();
 
     delete x;
     delete y;
     delete z;
+evol_pop();
 }
 
 /// Aide à l'ajout de sommets interfacés
@@ -733,13 +733,13 @@ void Graph::ajoutsommet()
 float Graph::calcul_K(int idx)
 {
 
-    int coeff = 1; /// penser a l'ajouter au fichier !!!!!
+//    unsigned int coeff = 1; /// penser a l'ajouter au fichier !!!!!
     Vertex &som = m_vertices.at(idx);
 
     int y = 0;
     int K = m_vertices.at(idx).m_value;
 //    m_vertices.at(idx).m_K = 0;
-    for (int i = 0 ; i < som.m_out.size() ; i++ )
+    for (unsigned int i = 0 ; i < som.m_out.size() ; i++ )
     {
         Edge &ar = m_edges.at(som.m_out[i]);
         y = m_vertices.at(ar.m_from).m_value * ar.m_weight;
@@ -768,7 +768,7 @@ float Graph::calcul_Coeff(int idx)
     int y = 0;
     int Coeff = 0;
 //    m_vertices.at(idx).m_K = 0;
-    for (int i = 0 ; i < som.m_in.size() ; i++ )
+    for (unsigned int i = 0 ; i < som.m_in.size() ; i++ )
     {
         Edge &ar = m_edges.at(som.m_in[i]);
         y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
@@ -1062,46 +1062,83 @@ std::vector<int> Graph::BFS()
 
 void Graph::evol_pop()
 {
-    double coeff=0, K=0;
-    std::vector <int> temp(m_vertices.size());
+    int coeff(0), K(0);
 
-
-
+    std::vector <int> valeurs(m_vertices.size());
     for (const auto& elem : m_vertices)
     {
-        Vertex &popv = m_vertices.at(elem.first);
+        valeurs[elem.first] = m_vertices[elem.first].m_value;
 
+        std::cout << "elements : " << valeurs[elem.first] << std::endl;
+        coeff = calcul_Coeff(elem.first);
+        K = calcul_K(elem.first);
 
+        std::cout << "K : " << K << std::endl;
+int y = 1-elem.second.m_value/K;
+        int Nt = elem.second.m_value;
 
-
-        for(unsigned int i = 0; i < popv.m_in.size(); i++)
+        if(Nt + (0.1 * Nt * y ) - coeff < 0)
+            valeurs[elem.first] = 0;
+        else if(elem.second.m_out.size() == 0)
         {
-            Edge &pope = m_edges.at(popv.m_in[i]);
-
-            temp[elem.first] = m_vertices[elem.first].m_value;
-
-
-            coeff = calcul_Coeff(elem.first);
-            K = calcul_K(elem.first);
-
-            int y = (1-elem.second.m_value)/K;
-            int Nt = elem.second.m_value;
-
-            if(Nt + (0.000000001 * Nt * y ) - coeff > 0)
-                coeff = 0;
-
-            else
-                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
-
-            if(m_vertices[elem.first].m_in.size() == 0)
-                m_vertices.at(pope.m_from).m_value = Nt + (1 * Nt * y ) - coeff;
-
+            valeurs[elem.first] = valeurs[elem.first];
         }
-
-
+        else
+        valeurs[elem.first] = Nt + (0.1 * Nt * y ) - coeff;
+    }
+    for (auto& elem : m_vertices)
+    {
+        elem.second.m_value = valeurs[elem.first];
     }
 
-
+//    double coeff=0, K=0;
+//    std::vector <int> temp(m_vertices.size());
+//
+//
+//
+//    for (const auto& elem : m_vertices)
+//    {
+//        Vertex &popv = m_vertices.at(elem.first);
+//
+//
+//
+//
+//        for(unsigned int i = 0; i < popv.m_in.size(); i++)
+//        {
+//            Edge &pope = m_edges.at(popv.m_in[i]);
+//
+//            temp[elem.first] = m_vertices[elem.first].m_value;
+//
+//
+//            coeff = calcul_Coeff(elem.first);
+//            K = calcul_K(elem.first);
+//
+//            int y = (1-elem.second.m_value)/K;
+//            int Nt = elem.second.m_value;
+//
+//            if(Nt + (0.000000001 * Nt * y ) - coeff < 0)
+//               temp[elem.first] = 0;
+//
+//            else
+//                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+////
+//            if(m_vertices[elem.first].m_in.size() == 0)
+//                m_vertices.at(pope.m_from).m_value = Nt + (1 * Nt * y ) - coeff;
+//
+//
+//
+//
+//        }
+//
+////m_vertices[elem.first].m_value = temp[elem.first];
+//
+//
+//    for ( auto& elem : m_vertices)
+//    {
+//        elem.second.m_value = temp[elem.first];
+//    }
+//
+// }
 
 
 //
