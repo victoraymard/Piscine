@@ -737,16 +737,22 @@ float Graph::calcul_K(int idx)
     Vertex &som = m_vertices.at(idx);
 
     int y = 0;
-    int K = 0;
+    int K = m_vertices.at(idx).m_value;
 //    m_vertices.at(idx).m_K = 0;
     for (int i = 0 ; i < som.m_out.size() ; i++ )
     {
         Edge &ar = m_edges.at(som.m_out[i]);
-        y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
+        y = m_vertices.at(ar.m_from).m_value * ar.m_weight;
        K = K + y;
 
 
     }
+    if(som.m_out.size() == 0)
+    {
+        K = m_vertices.at(idx).m_value/2;
+    }
+
+
     return K;
 
 
@@ -763,11 +769,13 @@ float Graph::calcul_Coeff(int idx)
     for (int i = 0 ; i < som.m_in.size() ; i++ )
     {
         Edge &ar = m_edges.at(som.m_in[i]);
-        y = m_vertices.at(ar.m_from).m_value * ar.m_weight;
+        y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
        Coeff = Coeff + y;
 
 
     }
+
+//    std::cout << m_vertices.at(m_edges.at(som.m_in[1]).m_from).m_value * m_edges.at(som.m_in[1]).m_weight << "                 eeeeeeeeeeeeeeeeeeeeeee" << std::endl;
     return Coeff;
 }
 
@@ -1054,10 +1062,23 @@ void Graph::evol_pop()
 
     std::map<int, Vertex>::iterator it;
 
+    std::vector<int> temp;
+
     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
     {
 
-       m_vertices.at(it->first).m_value =  m_vertices.at(it->first).m_value + 1.5 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - calcul_Coeff(it->first);
+
+         temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - calcul_Coeff(it->first));
+
+    }
+
+     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+    {
+
+        m_vertices.at(it->first).m_value = temp[it->first];
+
+
+
 
     }
 
