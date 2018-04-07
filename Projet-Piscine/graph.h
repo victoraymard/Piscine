@@ -348,6 +348,7 @@ class Graph
         void kosaraju();
         void bfs();
         void composante_fortement_connexe();
+        std::vector<int> BFS();
 
 };
 

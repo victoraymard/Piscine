@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include<stack>
+#include<queue>
 namespace patch
 {
 template < typename T > std::string to_string( const T& n )
@@ -881,3 +882,45 @@ void Graph::composante_fortement_connexe()
 }
 
 
+std::vector<int> Graph::BFS()
+{
+    std::vector<int> vecteur;
+    for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end();it++)
+     {
+       it->second.m_marque=false;
+     }
+    std::queue<int> file;
+    auto it = m_vertices.begin();
+    int s = it->first;
+    file.push(s);
+    while(!file.empty())
+    {
+         s = file.front();
+         vecteur.push_back(s);
+        std::cout <<s<<" ";  /// le stocker ici
+        file.pop();
+        for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end();itera++)  ///parcourt des adjacents de s
+        {
+            if(itera->second.m_from==s)     /// on regarde les adjacents de s
+            {
+               if(m_vertices[itera->second.m_to].m_marque==false)       /// on regarde sils sont pas marqués
+               {
+                m_vertices[itera->second.m_to].m_marque=true;
+                file.push(itera->second.m_to);
+               }
+            }
+            if (itera->second.m_to==s)
+            {
+                if(m_vertices[itera->second.m_from].m_marque==false)
+                {
+                    m_vertices[itera->second.m_from].m_marque=true;
+                    file.push(itera->second.m_from);
+                }
+            }
+        }
+
+
+    } ///checker si tous les sommets sont marqués
+    return vecteur;
+
+}
