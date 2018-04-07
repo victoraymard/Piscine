@@ -1062,54 +1062,81 @@ std::vector<int> Graph::BFS()
 
 void Graph::evol_pop()
 {
-
-int* x = new int;
-int* y = new int;
-bool* z= new bool;
-    std::map<int, Vertex>::iterator it;
-
-    std::vector<int> temp(m_vertices.size());
+    double coeff=0, K=0;
+    std::vector <int> temp(m_vertices.size());
 
 
-    int Coeff;
-    int K;
 
-
-    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
+    for (const auto& elem : m_vertices)
     {
-        temp[it->first] = m_vertices[it->first].m_value;
+        Vertex &popv = m_vertices.at(elem.first);
 
-        Coeff = calcul_Coeff(it->first);
-        K = calcul_K(it->first);
 
-        int x = (1 - m_vertices[(it->first)].m_value )/ K;
-        int Nt = m_vertices[(it->first)].m_value;
 
-        if(Nt + (0.001 * Nt * x ) - Coeff > 0)
-        temp[it->first] = Nt + (0.001 * Nt * x ) - Coeff;
-        else
-            temp[(it->first)] =0;
+
+        for(unsigned int i = 0; i < popv.m_in.size(); i++)
+        {
+            Edge &pope = m_edges.at(popv.m_in[i]);
+
+            temp[elem.first] = m_vertices[elem.first].m_value;
+
+
+            coeff = calcul_Coeff(elem.first);
+            K = calcul_K(elem.first);
+
+            int y = (1-elem.second.m_value)/K;
+            int Nt = elem.second.m_value;
+
+            if(Nt + (0.000000001 * Nt * y ) - coeff > 0)
+                coeff = 0;
+
+            else
+                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+
+            if(m_vertices[elem.first].m_in.size() == 0)
+                m_vertices.at(pope.m_from).m_value = Nt + (1 * Nt * y ) - coeff;
+
+        }
+
 
     }
 
-    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
-    {
-        m_vertices[it->first].m_value = temp[it->first];
-        for (auto &elt : m_vertices)
-        elt.second.pre_update();
-
-    for (auto &elt : m_edges)
-        elt.second.pre_update();
-
-    m_interface->m_top_box.update();
-
-    for (auto &elt : m_vertices)
-        elt.second.post_update(x, y, z);
-    for (auto &elt : m_edges)
-        elt.second.post_update();
 
 
-    }
+
+//
+//    std::map<int, Vertex>::iterator it;
+//
+//    std::vector<int> temp;
+
+//
+//    int Coeff;
+//    int K;
+//
+//
+//    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
+//    {
+//        temp[it->first] = m_vertices[it->first].m_value;
+//
+//        Coeff = calcul_Coeff(it->first);
+//        K = calcul_K(it->first);
+//
+//        int x = (1 - m_vertices[(it->first)].m_value )/ K;
+//        int Nt = m_vertices[(it->first)].m_value;
+//
+//        if(Nt + (0.001 * Nt * x ) - Coeff > 0)
+//        temp[it->first] = Nt + (0.001 * Nt * x ) - Coeff;
+//        else
+//            temp[(it->first)] =0;
+//
+//    }
+//
+//    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
+//    {
+//        m_vertices[it->first].m_value = temp[it->first];
+//
+//
+//    }
 
 
 
@@ -1146,7 +1173,21 @@ bool* z= new bool;
 //     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
 //    {
 //
-//        m_vertices.at(it->first).m_value = temp[it->first];
+//          if(temp[it->first] > 0)
+//            m_vertices.at(it->first).m_value = temp[it->first];
+//
+//          else
+//             m_vertices.at(it->first).m_value = 0;
+//                coeff = 0;
+//
+//            else
+//                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+//                coeff = 0;
+//
+//            else
+//                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+//
+//
 //
 //
 //    }
