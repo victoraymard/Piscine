@@ -31,15 +31,16 @@ int main()
 
     grman::fermer_allegro();
 
-
+    //nettoyage du terminal
+    system("cls");
+    std::cout <<"Au revoir"<<std::endl;
 
     return 0;
 }
 
 void menu()
 {
-    while ( !key[KEY_ESC] )
-    {
+
         BITMAP* fond ;
         BITMAP* buffer ;
         fond = load_bitmap("menu.jpg", NULL);
@@ -50,8 +51,14 @@ void menu()
         grman::set_pictures_path("pics");
         bool x = false, secu = false;
         Graph g;
+        std::string nom1 = "graphe1";
+        std::string nom2 = "graphe1bis";
+        std::string nom3 = "graphe2";
 
-if( secu == false)
+
+while ( !key[KEY_ESC] )
+    {
+/*if( secu == false)
             {
                 secu = true;
                 std::string nom1 = "graphe1";
@@ -61,9 +68,44 @@ if( secu == false)
 
         if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )
         {
+            x = true;*/
+
+
+      ///---------------------------------------------------------------------
+
+     x= false;
+        secu=false;
+
+        if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )///graphe1
+        {
             x = true;
+            if( secu == false)
+            {
+                secu = true;
+                g.recuperation(nom1);
 
+            }
+        }
+            else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 350< mouse_y && mouse_y < 380 )///graphe2
+        {
+            x = true;
+            if( secu == false)
+            {
+                secu = true;
+                g.recuperation(nom2);
 
+            }
+        }
+           else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
+        {
+            x = true;
+            if( secu == false)
+            {
+                secu = true;
+                g.recuperation(nom3);
+            }
+        }
+///-------------------------------------------------------------
             while (x == true)
             {
 
@@ -77,6 +119,7 @@ if( secu == false)
                     x= false;
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.clear_map();
                 }
 
             }
@@ -84,5 +127,4 @@ if( secu == false)
 
         }
     }
-}
 END_OF_MAIN();

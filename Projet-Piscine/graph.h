@@ -118,13 +118,16 @@ class VertexInterface
         grman::WidgetText m_msg;
         grman::WidgetButton m_bouton1;
 
+        grman::WidgetBox m_nom_animal;
+        grman::WidgetText m_nom_animal_label;
+
         int m_idx;
 
     public :
 
         // Le constructeur met en place les éléments de l'interface
         // voir l'implémentation dans le .cpp
-        VertexInterface(int idx, int x, int y, int mini, int maxi, std::string pic_name="", int pic_idx=0);
+        VertexInterface(int idx, int x, int y, int mini, int maxi, std::string thing_name, std::string pic_name="", int pic_idx=0);
         int getidx();
 };
 
@@ -276,6 +279,19 @@ class GraphInterface
 
         /// Dans cette boite seront ajoutés des boutons de contrôle etc...
         grman::WidgetBox m_tool_box;
+        grman::WidgetBox m_boite_boutons;
+
+        grman::WidgetButton m_bouton1;//création du bouton
+        grman::WidgetText m_bouton1_label; //label associé
+
+        grman::WidgetButton m_bouton2;
+        grman::WidgetText m_bouton2_label;
+
+        grman::WidgetButton m_bouton3;
+        grman::WidgetText m_bouton3_label;
+
+        grman::WidgetButton m_bouton4;
+        grman::WidgetText m_bouton4_label;
 
         // A compléter éventuellement par des widgets de décoration ou
         // d'édition (boutons ajouter/enlever ...)
@@ -309,7 +325,7 @@ class Graph
         Graph (GraphInterface *interface=nullptr) :
             m_interface(interface)  {  }
 
-        void add_interfaced_vertex(int idx, double value, int x, int y, int mini, int maxi, std::string pic_name="", int pic_idx=0 );
+        void add_interfaced_vertex(int idx, double value, int x, int y, int mini, int maxi, std::string thing_name, std::string pic_name, int pic_idx=0 );
         void add_interfaced_edge(int idx, int vert1, int vert2, double weight=0);
 
         /// Méthode spéciale qui construit un graphe arbitraire (démo)
@@ -327,6 +343,12 @@ class Graph
         void test_remove_edge(int eidx);
         void enleversommet(int idx);
         void k_connexite();
+        void clear_map();
+        void add_edge();
+        void kosaraju();
+        void bfs();
+        void composante_fortement_connexe();
+
 };
 
 

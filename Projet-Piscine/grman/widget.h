@@ -223,6 +223,7 @@ class WidgetText : public Widget
         virtual void draw();
 
         void set_message(std::string message="");
+        void set_color(int c){m_color=c;}
         std::string get_message() { return m_message; }
         void set_vertical(bool vertical=true) { m_vertical=vertical; set_message(m_message); } /// BRICOLAGE ...
 };
