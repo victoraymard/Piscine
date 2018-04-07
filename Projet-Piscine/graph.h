@@ -157,6 +157,8 @@ protected :
 
     bool m_marque; /// Pour le BFS apparemment ...
 
+    float m_K;
+
     /// le POINTEUR sur l'interface associée, nullptr -> pas d'interface
     std::shared_ptr<VertexInterface> m_interface = nullptr;
 
@@ -175,7 +177,7 @@ public:
     /// le pre_update et post_update de Vertex (pas directement la boucle de jeu)
     /// Voir l'implémentation Graph::update dans le .cpp
     void pre_update();
-    void post_update(int *x);
+    void post_update(int *x, int *y,bool *z);
     double getvalue()
     {
         return m_value;
@@ -357,6 +359,7 @@ public:
     void composante_fortement_connexe();
     std::vector<int> BFS();
     void ajoutsommet();
+    float calcul_K(int x);
 
 };
 

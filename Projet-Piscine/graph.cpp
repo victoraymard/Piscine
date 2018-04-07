@@ -107,13 +107,20 @@ void Vertex::pre_update()
 
 
 /// Gestion du Vertex après l'appel à l'interface
-void Vertex::post_update(int *x)
+void Vertex::post_update(int *x, int *y,bool *z)
 {
     if (!m_interface)
         return;
 
     /// Reprendre la valeur du slider dans la donnée m_value locale
-    m_value = m_interface->m_slider_value.get_value();
+    if(m_value != m_interface->m_slider_value.get_value())
+    {
+        m_value = m_interface->m_slider_value.get_value();
+        *y = m_interface->getidx();
+        *z = true;
+
+    }
+
 
     if (m_interface->m_bouton1.clicked())
     {
@@ -308,7 +315,11 @@ void Graph::update(std::string nom)
 {
 
     int *x = new int;
+    int *y = new int;
+    bool *z = new bool;
+    *y = -1;
     *x = -1;
+    *z = false;
     if (!m_interface)
         return;
 
@@ -321,7 +332,7 @@ void Graph::update(std::string nom)
     m_interface->m_top_box.update();
 
     for (auto &elt : m_vertices)
-        elt.second.post_update(x);
+        elt.second.post_update(x, y, z);
     for (auto &elt : m_edges)
         elt.second.post_update();
 
@@ -369,7 +380,16 @@ void Graph::update(std::string nom)
         enleversommet(*x);
     }
 
+    if( *y > -1 && *z == true)
+    {
+        z = false;
+        calcul_K(*y);
+    }
+
+
     delete x;
+    delete y;
+    delete z;
 }
 
 /// Aide à l'ajout de sommets interfacés
@@ -982,6 +1002,31 @@ std::vector<int> Graph::BFS()
 
     } ///checker si tous les sommets sont marqués
     return vecteur;
+
+}
+
+float Graph::calcul_K(int x)
+{
+    int idx = x;
+    int coeff = 1; /// penser a l'ajouter au fichier !!!!!
+    Vertex &som = m_vertices.at(idx);
+
+    int y = 0;
+//    m_vertices.at(idx).m_K = 0;
+    for (int i = 0 ; i < som.m_out.size() ; i++ )
+    {
+        Edge &ar = m_edges.at(som.m_out[i]);
+        y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
+        std::cout <<  ar.m_weight  << "       eeeeeeeeeeeeeeeeeeeeeeee" << std::endl;
+
+        m_vertices.at(idx).m_K = m_vertices.at(idx).m_K + y;
+
+
+    }
+
+
+
+
 
 }
 
