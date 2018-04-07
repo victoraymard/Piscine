@@ -127,7 +127,7 @@ public :
 
     // Le constructeur met en place les éléments de l'interface
     // voir l'implémentation dans le .cpp
-    VertexInterface(int idx, int x, int y, unsigned int mini, unsigned int maxi, std::string thing_name, std::string pic_name="", int pic_idx=0);
+    VertexInterface(int idx, int x, int y,  int mini,  int maxi, std::string thing_name, std::string pic_name="", int pic_idx=0);
     int getidx();
     std::string getthing()
     {

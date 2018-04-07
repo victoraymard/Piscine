@@ -22,7 +22,7 @@ template < typename T > std::string to_string( const T& n )
 ****************************************************/
 
 /// Le constructeur met en place les éléments de l'interface
-VertexInterface::VertexInterface(int idx, int x, int y, unsigned int mini, unsigned int maxi, std::string thing_name,std::string pic_name, int pic_idx)
+VertexInterface::VertexInterface(int idx, int x, int y,  int mini,  int maxi, std::string thing_name,std::string pic_name, int pic_idx)
 {
     m_idx = idx;
     m_thing = thing_name;
@@ -1063,48 +1063,93 @@ std::vector<int> Graph::BFS()
 void Graph::evol_pop()
 {
 
+int* x = new int;
+int* y = new int;
+bool* z= new bool;
     std::map<int, Vertex>::iterator it;
 
-    std::vector<int> temp;
+    std::vector<int> temp(m_vertices.size());
 
 
+    int Coeff;
+    int K;
 
-    for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+
+    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
     {
-        if(m_vertices.at(it->first).m_in.size() == 0 )
-        {
-                     temp.push_back(m_vertices.at(it->first).m_value + 0.00001 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+        temp[it->first] = m_vertices[it->first].m_value;
 
-        }
-        if(m_vertices.at(it->first).m_out.size() == 0 )
-        {
-                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0*(calcul_Coeff(it->first)));
+        Coeff = calcul_Coeff(it->first);
+        K = calcul_K(it->first);
 
-        }
-        if(m_vertices.at(it->first).m_in.size() == 0  && m_vertices.at(it->first).m_out.size() == 0)
-        {
-                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+        int x = (1 - m_vertices[(it->first)].m_value )/ K;
+        int Nt = m_vertices[(it->first)].m_value;
 
-        }
+        if(Nt + (0.001 * Nt * x ) - Coeff > 0)
+        temp[it->first] = Nt + (0.001 * Nt * x ) - Coeff;
         else
-            {
-                         temp.push_back(m_vertices.at(it->first).m_value + 0.01 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
-
-
-        }
-
-
-
+            temp[(it->first)] =0;
 
     }
 
-     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
     {
+        m_vertices[it->first].m_value = temp[it->first];
+        for (auto &elt : m_vertices)
+        elt.second.pre_update();
 
-        m_vertices.at(it->first).m_value = temp[it->first];
+    for (auto &elt : m_edges)
+        elt.second.pre_update();
+
+    m_interface->m_top_box.update();
+
+    for (auto &elt : m_vertices)
+        elt.second.post_update(x, y, z);
+    for (auto &elt : m_edges)
+        elt.second.post_update();
 
 
     }
+
+
+
+
+//    for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+//    {
+//        if(m_vertices.at(it->first).m_in.size() == 0 )
+//        {
+//                     temp.push_back(m_vertices.at(it->first).m_value + 0.000001 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0*(calcul_Coeff(it->first)));
+//
+//        }
+//        if(m_vertices.at(it->first).m_out.size() == 0 )
+//        {                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+//
+//        }
+//        if(m_vertices.at(it->first).m_in.size() == 0  && m_vertices.at(it->first).m_out.size() == 0)
+//        {
+//                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+//
+//        }
+//        else
+//            {
+//                         temp.push_back(m_vertices.at(it->first).m_value + 0.00001 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+//
+//
+//        }
+//
+//
+//
+//std::cout << m_vertices.at(it->first).m_value << "      rrrrrrrrrrrrrrrrrrrrrrrrrrrr" << std::endl;
+//
+//    }
+//
+//     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+//    {
+//
+//        m_vertices.at(it->first).m_value = temp[it->first];
+//
+//
+//    }
 
 }
 
