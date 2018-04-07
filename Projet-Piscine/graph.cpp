@@ -22,7 +22,7 @@ template < typename T > std::string to_string( const T& n )
 ****************************************************/
 
 /// Le constructeur met en place les éléments de l'interface
-VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std::string thing_name,std::string pic_name, int pic_idx)
+VertexInterface::VertexInterface(int idx, int x, int y, unsigned int mini, unsigned int maxi, std::string thing_name,std::string pic_name, int pic_idx)
 {
     m_idx = idx;
     m_thing = thing_name;
@@ -279,7 +279,7 @@ void Graph::recuperation(std::string nom1)
     {
         int v1 = 0;
         int v2 = 0 ;
-        int idx, x,y, maxi, mini, id_vert1, id_vert2;
+        unsigned int idx, x,y, maxi, mini, id_vert1, id_vert2;
         double value, weight;
         std::string pic_name, thing_name;
         fichier >> v1;
@@ -753,6 +753,8 @@ float Graph::calcul_K(int idx)
     }
 
 
+
+
     return K;
 
 
@@ -771,6 +773,7 @@ float Graph::calcul_Coeff(int idx)
         Edge &ar = m_edges.at(som.m_in[i]);
         y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
        Coeff = Coeff + y;
+
 
 
     }
@@ -1064,11 +1067,34 @@ void Graph::evol_pop()
 
     std::vector<int> temp;
 
+
+
     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
     {
+        if(m_vertices.at(it->first).m_in.size() == 0 )
+        {
+                     temp.push_back(m_vertices.at(it->first).m_value + 0.00001 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+
+        }
+        if(m_vertices.at(it->first).m_out.size() == 0 )
+        {
+                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0*(calcul_Coeff(it->first)));
+
+        }
+        if(m_vertices.at(it->first).m_in.size() == 0  && m_vertices.at(it->first).m_out.size() == 0)
+        {
+                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+
+        }
+        else
+            {
+                         temp.push_back(m_vertices.at(it->first).m_value + 0.01 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
 
 
-         temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - calcul_Coeff(it->first));
+        }
+
+
+
 
     }
 
@@ -1076,8 +1102,6 @@ void Graph::evol_pop()
     {
 
         m_vertices.at(it->first).m_value = temp[it->first];
-
-
 
 
     }
