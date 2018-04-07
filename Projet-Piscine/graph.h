@@ -305,6 +305,9 @@ private :
     grman::WidgetButton m_bouton6;
     grman::WidgetText m_bouton6_label;
 
+    grman::WidgetButton m_bouton7;
+    grman::WidgetText m_bouton7_label;
+
     // A compléter éventuellement par des widgets de décoration ou
     // d'édition (boutons ajouter/enlever ...)
 

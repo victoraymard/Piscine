@@ -7,7 +7,10 @@ int main()
 
     /// A appeler en 1er avant d'instancier des objets graphiques etc...
     grman::init();
-
+    /*Graph graphe;
+    std::string nom1 = "graphe1";
+        graphe.recuperation(nom1);
+        graphe.k_connexite();*/
     /// Le nom du répertoire où se trouvent les images à charger
     grman::set_pictures_path("pics");
 
@@ -21,6 +24,7 @@ int main()
 
     return 0;
 }
+
 
 void menu()
 {
@@ -52,13 +56,14 @@ void menu()
         if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )///graphe1
         {
             key[KEY_R] = false;
+            key[KEY_M]=false;
+            key[KEY_N]=false;
 
             x = true;
             if( secu == false)
             {
                 secu = true;
                 g.recuperation(nom1);
-
             }
             while (x == true)
             {
@@ -71,6 +76,28 @@ void menu()
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
                     g.clear_map();
+                }
+
+                if (key[KEY_M])
+                {
+                    key[KEY_M] = false;
+
+                    g.k_connexite();
+
+                    g.clear_map();
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.recuperation(nom1);
+                }
+                if (key[KEY_N])
+                {
+                    key[KEY_N] = false;
+                    g.forte_conexite();
+
+                    g.clear_map();
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.recuperation(nom1);
                 }
             }
         }
@@ -95,6 +122,27 @@ void menu()
                     blit(buffer, screen, 0,0,0,0,800, 600);
                     g.clear_map();
                 }
+                if (key[KEY_M])
+                {
+                    key[KEY_M] = false;
+
+                    g.k_connexite();
+
+                    g.clear_map();
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.recuperation(nom2);
+                }
+                if (key[KEY_N])
+                {
+                    key[KEY_N] = false;
+                    g.forte_conexite();
+
+                    g.clear_map();
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.recuperation(nom2);
+                }
             }
         }
         else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
@@ -118,9 +166,30 @@ void menu()
                     blit(buffer, screen, 0,0,0,0,800, 600);
                     g.clear_map();
                 }
+                if (key[KEY_M])
+                {
+                    key[KEY_M] = false;
+
+                    g.k_connexite();
+
+                    g.clear_map();
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.recuperation(nom3);
+                }
+                if (key[KEY_N])
+                {
+                    key[KEY_N] = false;
+                    g.forte_conexite();
+
+                    g.clear_map();
+                    blit(fond, buffer, 0,0,0,0,800, 600);
+                    blit(buffer, screen, 0,0,0,0,800, 600);
+                    g.recuperation(nom3);
+                }
             }
-        }
 ///-------------------------------------------------------------
+        }
     }
 }
 END_OF_MAIN();
