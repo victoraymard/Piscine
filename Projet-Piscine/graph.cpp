@@ -6,6 +6,7 @@
 #include <fstream>
 #include<stack>
 #include<queue>
+#include <set>
 namespace patch
 {
 template < typename T > std::string to_string( const T& n )
@@ -326,16 +327,16 @@ void Graph::update(std::string nom)
 
 
     /// TOUCHES CLAVIER
-//    if (key[KEY_B])
-//    {
-//        sauvegarde(m_vertices);
-//    }
+    if (key[KEY_B])
+    {
+        sauvegarde(m_vertices,nom);
+    }
 
     /// BOUTONS
 
 
         //sauvegarder
-        sauvegarde(m_vertices, nom);
+//        sauvegarde(m_vertices, nom);
 
     if (m_interface->m_bouton2.clicked()) ///ne marche pas trop
     {
@@ -357,7 +358,13 @@ void Graph::update(std::string nom)
 
     }
 
-    if (*x > -1 && *x < m_vertices.size())
+    if(m_interface->m_bouton5.clicked())
+    {
+        ajoutsommet();
+
+    }
+
+    if (*x > -1)
     {
         enleversommet(*x);
     }
@@ -588,6 +595,8 @@ void Graph::test_remove_edge(int eidx)
 void Graph::enleversommet(int vidx)
 {
     Vertex &remver = m_vertices.at(vidx);
+    std::cout << "  eeeeeeeeeeeeeeeeeeee           "  << std::endl;
+
 
     int i = remver.m_in.size()-1;
     while (!remver.m_in.empty())
@@ -934,8 +943,45 @@ std::vector<int> Graph::BFS()
 
 }
 
-void Graph::suppression()
+void Graph::ajoutsommet()
 {
-    m_vertices.erase(m_vertices.begin(), m_vertices.end());
-    m_edges.erase(m_edges.begin(),m_edges.end());
+
+    std::map<int, Vertex>::iterator it;
+    std::set<int>::iterator it1;
+    std::set<int> temp;
+     int idx = 0;
+            double value;
+            int x;
+            int y;
+            std::string thing_name;
+            std::string  pic_name;
+
+
+    for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+    {
+        temp.insert(m_vertices[it->first].m_interface->getidx());
+
+    }
+
+it1 = temp.end();
+
+   idx = (*it1)+1;
+
+
+   std::cout << "veuillez renter les coord du sommet, sa valeur et son nom" << std::endl;
+   std::cin >> x >> y >> value >> thing_name;
+int maxi = value + value*0.8;
+             int mini = 0;
+
+   pic_name = thing_name + ".bmp";
+
+
+
+
+    add_interfaced_vertex(idx, value,x,y,mini, maxi , thing_name, pic_name);
+
+
+    temp.erase(temp.begin(),temp.end());
+
+
 }

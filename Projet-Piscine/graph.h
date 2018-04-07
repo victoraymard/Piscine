@@ -353,7 +353,7 @@ class Graph
         void bfs();
         void composante_fortement_connexe();
         std::vector<int> BFS();
-        void suppression();
+        void ajoutsommet();
 
 };
 
