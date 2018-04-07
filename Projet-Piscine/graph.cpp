@@ -1002,13 +1002,13 @@ void Graph::forte_conexite()///ne marche pas si on supprime des sommets --> util
 int Graph::k_connexite()
 {
 
-    std::map<int,Vertex>map_de_sauvegarde=m_vertices; /// on sauvegarde m_vertices
-    std::map<int,Edge>map_de_sauvegarde2=m_edges;     ///sauvegarde des aretes
-    std::vector<int> vect_reference=BFS();
+    std::map<int,Vertex>map_de_sauvegarde=m_vertices; /// on sauvegarde m_vertices et m_edges
+    std::map<int,Edge>map_de_sauvegarde2=m_edges;     /// car on va faire des modifs dessus
+    std::vector<int> vect_reference=BFS();            /// def d'un vecteur de reference avec la composante connexe originel du graphe
 
 ///PREMIER CAS ON REGARDE SI KMIN=1 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet et voir si ça impact la connexité
+    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet de m_vertices et voir si ça impact la connexité
     {
         m_vertices=map_de_sauvegarde;   ///on recharge les deux map a chaque fois, cest pour pouvoir tester pour chaque sommet
         m_edges=map_de_sauvegarde2;     /// sinon on effacerait chaque sommet un par un ...
@@ -1017,17 +1017,17 @@ int Graph::k_connexite()
         {
             if(iterat->second.m_to==k || iterat->second.m_from==k)
             {
-                m_edges.erase(iterat->first);
+                m_edges.erase(iterat->first);      /// effaçement des arets en lien avec le sommet supprimé
             }
         }
         int entier=k;
-        m_vertices.erase(k);
+        m_vertices.erase(k);  /// suppression du sommet
 
-        std::vector<int>vecteur_de_transition=BFS();
-        vecteur_de_transition.push_back(entier);
+        std::vector<int>vecteur_de_transition=BFS();       /// nouveau vecteur avec la nouvelle compo connexe
+        vecteur_de_transition.push_back(entier);           /// push back pour comparer
 
         std::sort(vecteur_de_transition.begin(),vecteur_de_transition.end());   /// tri des 2 vecteurs
-        std::sort(vect_reference.begin(),vect_reference.end());
+        std::sort(vect_reference.begin(),vect_reference.end());                 /// pour pouvoir les comparer
 
         if(vect_reference!=vecteur_de_transition)            /// si les deux vecteurs sont differents alors la suppression du sommet k a changé la connexité
         {
@@ -1042,7 +1042,7 @@ int Graph::k_connexite()
 
 /// DEUXIEME CAS ON REGARDE SI KMIN=2 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet et voir si ça impact la connexité
+    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase par doublet de sommet
     {
         m_vertices=map_de_sauvegarde;
         m_edges=map_de_sauvegarde2;
@@ -1073,16 +1073,17 @@ int Graph::k_connexite()
             }
         }
 
-         m_vertices.erase(it->first);
+         m_vertices.erase(it->first);    /// lui cest le second du doublet
 
          std::vector<int>vecteur_de_transition2=BFS(); /// le vecteur de composante connexe obtenu par BFS en ayant préalablement enlevé deux sommets
-         vecteur_de_transition2.push_back(k);
+         vecteur_de_transition2.push_back(k);          /// on les rajoute (le but est de voir si la compo connexe est altérée)
          vecteur_de_transition2.push_back(it->first);
-         std::sort(vecteur_de_transition2.begin(), vecteur_de_transition2.end());
+
+         std::sort(vecteur_de_transition2.begin(), vecteur_de_transition2.end()); /// tri
          std::sort(vect_reference.begin(),vecteur_de_transition2.end());
 
 
-         if(vect_reference!=vecteur_de_transition2)
+         if(vect_reference!=vecteur_de_transition2)    /// idem que dans le cas numero 1
          {
              std::cout<<"kmin=2"<<" Il suffit d'enlever les sommets :"<<k<<" et "<<it->first<<" pour rendre le graphe non connexe"<<std::endl;
          }
@@ -1094,6 +1095,10 @@ int Graph::k_connexite()
 
 
      /// kmin=3 à faire .....
+
+
+     m_vertices=map_de_sauvegarde;
+     m_edges=map_de_sauvegarde2;
 
      return 0;
 
@@ -1172,8 +1177,8 @@ void Graph::bfs()
 
 
 
-std::vector<int> Graph::BFS()
-{
+std::vector<int> Graph::BFS()   /// BFS qui suppose que le graphe de base et entierement connexe et renvoie un vecteur de int contenant la compo connexe
+{                               /// si besoin ya vite moyen de rajouter quelque chose pour quils donnent toutes les compos connexes du graphe
     std::vector<int> vecteur;
     for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end(); it++)
     {
@@ -1183,11 +1188,12 @@ std::vector<int> Graph::BFS()
     auto it = m_vertices.begin();
     int s = it->first;
     file.push(s);
+    m_vertices[s].m_marque=true;
     while(!file.empty())
     {
         s = file.front();
         vecteur.push_back(s);
-        std::cout <<s<<" ";  /// le stocker ici
+      //  std::cout <<s<<" ";  /// le stocker ici
         file.pop();
         for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end(); itera++) ///parcourt des adjacents de s
         {
@@ -1209,7 +1215,7 @@ std::vector<int> Graph::BFS()
             }
         }
 
-
+    /// eventuellement :
     } ///checker si tous les sommets sont marqués
     return vecteur;
 
