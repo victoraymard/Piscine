@@ -346,7 +346,7 @@ class Graph
         void remplissagemap(std::string path);
         void test_remove_edge(int eidx);
         void enleversommet(int idx);
-        void k_connexite();
+        int k_connexite();
         void clear_map();
         void add_edge();
         void kosaraju();

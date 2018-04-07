@@ -251,7 +251,7 @@
 	<string>
 	"graph.h"
 
-1523066063 c:\users\pierr\piscine\projet-piscine\graph.h
+1523105877 c:\users\pierr\piscine\projet-piscine\graph.h
 	<vector>
 	<map>
 	<string>
@@ -281,7 +281,7 @@
 1523065647 source:c:\users\pierr\piscine\projet-piscine\espece.cpp
 	"Espece.h"
 
-1523066112 source:c:\users\pierr\piscine\projet-piscine\graph.cpp
+1523099459 source:c:\users\pierr\piscine\projet-piscine\graph.cpp
 	"graph.h"
 	"Animal.h"
 	"Reservoir.h"
@@ -290,6 +290,7 @@
 	<fstream>
 	<stack>
 	<queue>
+	<set>
 
 1523065647 source:c:\users\pierr\piscine\projet-piscine\grman\coords.cpp
 	"coords.h"
@@ -311,7 +312,7 @@
 1523065647 source:c:\users\pierr\piscine\projet-piscine\grman\widget.cpp
 	"widget.h"
 
-1523065647 source:c:\users\pierr\piscine\projet-piscine\main.cpp
+1523098187 source:c:\users\pierr\piscine\projet-piscine\main.cpp
 	"grman/grman.h"
 	<iostream>
 	"graph.h"

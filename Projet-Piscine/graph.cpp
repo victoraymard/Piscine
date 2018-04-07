@@ -7,6 +7,7 @@
 #include<stack>
 #include<queue>
 #include <set>
+#include<algorithm>
 namespace patch
 {
 template < typename T > std::string to_string( const T& n )
@@ -693,35 +694,107 @@ void Graph::clear_map()
 
 
 
-void Graph::k_connexite()
+int Graph::k_connexite()
 {
 
-    std::map<int,Vertex>map_de_transition=m_vertices;
-//    std::vector<int> vect_reference=BFS(map_de_transition);
-    for(std::map<int,Vertex>::iterator it=map_de_transition.begin(); it!=map_de_transition.end(); it++)
+    std::map<int,Vertex>map_de_sauvegarde=m_vertices; /// on sauvegarde m_vertices
+    std::map<int,Edge>map_de_sauvegarde2=m_edges;     ///sauvegarde des aretes
+    std::vector<int> vect_reference=BFS();
+
+///PREMIER CAS ON REGARDE SI KMIN=1 -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet et voir si ça impact la connexité
     {
-        map_de_transition.erase(it->first);
-        // std::vector<int> vect=BFS(map_de_transition);
-        // algo de tri pour faire en sorte que les 2 soient rangés pareil
-        //on ajoute le sommet effacé dans le premoer
-        // on regarde sils sont egaux
-        //if vect_reference==vect
-        //on stock : it->first
-        // on incrémente un compteur
-        // else
-        // on affiche it-> first
-        //"il suffit d'enlever le sommet it -> first pour que le graphe ne soit plus connexe"
-        ///BFS SUR LA NOUVELLE MAP DE TRANSITION
-        /// SI ON TROUVE LA MEME COMPOSANTE CONNEXE (EXCEPTE LE SOMMET QUON A ERASE)
-        /// ON CONTINUE
-        /// ON LE STOCK
-        /// ON ERASE UN AUTRE SOMMET DE MAP DE TRANSITION
-        ///SINON ON NOTE LE SOMMET QUON A ERASE : ON LE STOCK ON
-        ///
+        m_vertices=map_de_sauvegarde;   ///on recharge les deux map a chaque fois, cest pour pouvoir tester pour chaque sommet
+        m_edges=map_de_sauvegarde2;     /// sinon on effacerait chaque sommet un par un ...
+
+        for(std::map<int,Edge>::iterator iterat=m_edges.begin();iterat!=m_edges.end();iterat++) /// on erase toutes les aretes comportant le sommet supprimé
+        {
+            if(iterat->second.m_to==k || iterat->second.m_from==k)
+            {
+                m_edges.erase(iterat->first);
+            }
+        }
+        int entier=k;
+        m_vertices.erase(k);
+
+        std::vector<int>vecteur_de_transition=BFS();
+        vecteur_de_transition.push_back(entier);
+
+        std::sort(vecteur_de_transition.begin(),vecteur_de_transition.end());   /// tri des 2 vecteurs
+        std::sort(vect_reference.begin(),vect_reference.end());
+
+        if(vect_reference!=vecteur_de_transition)            /// si les deux vecteurs sont differents alors la suppression du sommet k a changé la connexité
+        {
+            std::cout<<"kmin=1"<<"Il suffit d'enlever le sommet : "<<k<<" pour rendre le graphe non connexe"<<std::endl;
+            return k;
+        }
+    }
+
+    m_vertices=map_de_sauvegarde;     /// chargement des map de depart
+    m_edges=map_de_sauvegarde2;
+
+
+/// DEUXIEME CAS ON REGARDE SI KMIN=2 ------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet et voir si ça impact la connexité
+    {
+        m_vertices=map_de_sauvegarde;
+        m_edges=map_de_sauvegarde2;
+
+        for(std::map<int,Edge>::iterator iterat=m_edges.begin();iterat!=m_edges.end();iterat++) /// on erase toutes les aretes comportant le sommet supprimé
+        {
+            if(iterat->second.m_to==k || iterat->second.m_from==k)
+            {
+                m_edges.erase(iterat->first);
+            }
+        }
+        int entier=k;
+        m_vertices.erase(k);  /// on va prendre des des doublets de sommets, lui ce sera le premier du doublet
+
+        std::map<int,Vertex> map_de_sauvegarde3=m_vertices;
+        std::map<int,Edge>map_de_sauvegarde4=m_edges;
+
+        for(std::map<int,Vertex>::iterator it=m_vertices.begin();it!=m_vertices.end();it++)
+        {
+            m_vertices=map_de_sauvegarde3;
+            m_edges=map_de_sauvegarde4;
+
+            for(std::map<int,Edge>::iterator iterat=m_edges.begin();iterat!=m_edges.end();iterat++) /// on erase toutes les aretes comportant le sommet supprimé (le deuxieme du doublet)
+        {
+            if(iterat->second.m_to==it->first || iterat->second.m_from==it->first)
+            {
+                m_edges.erase(iterat->first);
+            }
+        }
+
+         m_vertices.erase(it->first);
+
+         std::vector<int>vecteur_de_transition2=BFS(); /// le vecteur de composante connexe obtenu par BFS en ayant préalablement enlevé deux sommets
+         vecteur_de_transition2.push_back(k);
+         vecteur_de_transition2.push_back(it->first);
+         std::sort(vecteur_de_transition2.begin(), vecteur_de_transition2.end());
+         std::sort(vect_reference.begin(),vecteur_de_transition2.end());
+
+
+         if(vect_reference!=vecteur_de_transition2)
+         {
+             std::cout<<"kmin=2"<<" Il suffit d'enlever les sommets :"<<k<<" et "<<it->first<<" pour rendre le graphe non connexe"<<std::endl;
+         }
+
+
+        }
 
     }
 
+
+     /// kmin=3 à faire .....
+
+     return 0;
+
 }
+
+
 
 void Graph::kosaraju()
 {
