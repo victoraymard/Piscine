@@ -1,13 +1,13 @@
 8
 6
-0 2300 -102 -92 baleine baleine.bmp
-1 60000 378 -92 orque orque.bmp
-2 3e+007 34 90 phoque phoque.bmp
-3 300000 333 121 leopard_des_mers leopard_des_mers.bmp
-5 1e+008 628 358 calmar calmar.bmp
-7 1e+006 -39 36 zooplancton_carnivore zooplancton_carnivore.bmp
-8 1e+006 378 478 zooplancton_herbivore zooplancton_herbivore.bmp
-9 1e+009 -102 478 phytoplancton phytoplancton.bmp
+0 2300 -104 -94 baleine baleine.bmp
+1 60000 376 -94 orque orque.bmp
+2 3e+007 32 88 phoque phoque.bmp
+3 300000 331 119 leopard_des_mers leopard_des_mers.bmp
+5 1e+008 626 356 calmar calmar.bmp
+7 1e+006 -41 34 zooplancton_carnivore zooplancton_carnivore.bmp
+8 1e+006 376 476 zooplancton_herbivore zooplancton_herbivore.bmp
+9 1e+009 -104 476 phytoplancton phytoplancton.bmp
 6 9 8 0
 7 8 5 100
 8 5 3 20

@@ -294,6 +294,9 @@ class GraphInterface
         grman::WidgetButton m_bouton4;
         grman::WidgetText m_bouton4_label;
 
+        grman::WidgetButton m_bouton5;
+        grman::WidgetText m_bouton5_label;
+
         // A compléter éventuellement par des widgets de décoration ou
         // d'édition (boutons ajouter/enlever ...)
 

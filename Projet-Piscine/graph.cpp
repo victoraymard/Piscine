@@ -240,11 +240,20 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
     /// bouton 4
     m_boite_boutons.add_child(m_bouton4);
-    m_bouton4.set_frame(0,135,78,44);
+    m_bouton4.set_frame(0,179,78,44);
     m_bouton4.set_bg_color(ROUGESOMBRE);
 
     m_bouton4.add_child(m_bouton4_label);
     m_bouton4_label.set_message("EXIT");
+
+    ///bouton 5
+    m_boite_boutons.add_child(m_bouton5);
+     m_bouton5.set_frame(0,135,78,44);
+    m_bouton5.set_bg_color(BLEU);
+
+    m_bouton5.add_child(m_bouton5_label);
+    m_bouton5_label.set_message("+ SOMMET");
+
 }
 
 
