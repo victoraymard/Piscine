@@ -113,13 +113,14 @@ void Vertex::post_update(int *x, int *y,bool *z)
         return;
 
     /// Reprendre la valeur du slider dans la donnée m_value locale
-    if(m_value != m_interface->m_slider_value.get_value())
-    {
-        m_value = m_interface->m_slider_value.get_value();
-        *y = m_interface->getidx();
-        *z = true;
-
-    }
+    m_value = m_interface->m_slider_value.get_value();
+//    if(m_value != m_interface->m_slider_value.get_value())
+//    {
+//
+//        *y = m_interface->getidx();
+//        *z = true;
+//
+//    }
 
 
     if (m_interface->m_bouton1.clicked())
@@ -380,12 +381,14 @@ void Graph::update(std::string nom)
         enleversommet(*x);
     }
 
-    if( *y > -1 && *z == true)
-    {
-        z = false;
-        calcul_K(*y);
-    }
+//    if( *y > -1 && *z == true)
+//    {
+//        z = false;
+//        calcul_K(*y);
+//        calcul_Coeff(*y);
+//    }
 
+evol_pop();
 
     delete x;
     delete y;
@@ -727,6 +730,46 @@ void Graph::ajoutsommet()
 
 }
 
+float Graph::calcul_K(int idx)
+{
+
+    int coeff = 1; /// penser a l'ajouter au fichier !!!!!
+    Vertex &som = m_vertices.at(idx);
+
+    int y = 0;
+    int K = 0;
+//    m_vertices.at(idx).m_K = 0;
+    for (int i = 0 ; i < som.m_out.size() ; i++ )
+    {
+        Edge &ar = m_edges.at(som.m_out[i]);
+        y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
+       K = K + y;
+
+
+    }
+    return K;
+
+
+}
+
+float Graph::calcul_Coeff(int idx)
+{
+//    int coeff = 1; /// penser a l'ajouter au fichier !!!!!
+    Vertex &som = m_vertices.at(idx);
+
+    int y = 0;
+    int Coeff = 0;
+//    m_vertices.at(idx).m_K = 0;
+    for (int i = 0 ; i < som.m_in.size() ; i++ )
+    {
+        Edge &ar = m_edges.at(som.m_in[i]);
+        y = m_vertices.at(ar.m_from).m_value * ar.m_weight;
+       Coeff = Coeff + y;
+
+
+    }
+    return Coeff;
+}
 
 
 
@@ -1005,28 +1048,20 @@ std::vector<int> Graph::BFS()
 
 }
 
-float Graph::calcul_K(int x)
+
+void Graph::evol_pop()
 {
-    int idx = x;
-    int coeff = 1; /// penser a l'ajouter au fichier !!!!!
-    Vertex &som = m_vertices.at(idx);
 
-    int y = 0;
-//    m_vertices.at(idx).m_K = 0;
-    for (int i = 0 ; i < som.m_out.size() ; i++ )
+    std::map<int, Vertex>::iterator it;
+
+    for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
     {
-        Edge &ar = m_edges.at(som.m_out[i]);
-        y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
-        std::cout <<  ar.m_weight  << "       eeeeeeeeeeeeeeeeeeeeeeee" << std::endl;
 
-        m_vertices.at(idx).m_K = m_vertices.at(idx).m_K + y;
-
+       m_vertices.at(it->first).m_value =  m_vertices.at(it->first).m_value + 1.5 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - calcul_Coeff(it->first);
 
     }
 
-
-
-
-
 }
+
+
 

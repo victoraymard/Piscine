@@ -360,6 +360,8 @@ public:
     std::vector<int> BFS();
     void ajoutsommet();
     float calcul_K(int x);
+    float calcul_Coeff(int idx);
+    void evol_pop();
 
 };
 
