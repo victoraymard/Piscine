@@ -23,7 +23,7 @@ template < typename T > std::string to_string( const T& n )
 ****************************************************/
 
 /// Le constructeur met en place les éléments de l'interface
-VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std::string thing_name,std::string pic_name, int pic_idx)
+VertexInterface::VertexInterface(int idx, int x, int y,  int mini,  int maxi, std::string thing_name,std::string pic_name, int pic_idx)
 {
     m_idx = idx;
     m_thing = thing_name;
@@ -108,13 +108,21 @@ void Vertex::pre_update()
 
 
 /// Gestion du Vertex après l'appel à l'interface
-void Vertex::post_update(int *x)
+void Vertex::post_update(int *x, int *y,bool *z)
 {
     if (!m_interface)
         return;
 
     /// Reprendre la valeur du slider dans la donnée m_value locale
     m_value = m_interface->m_slider_value.get_value();
+//    if(m_value != m_interface->m_slider_value.get_value())
+//    {
+//
+//        *y = m_interface->getidx();
+//        *z = true;
+//
+//    }
+
 
     if (m_interface->m_bouton1.clicked())
     {
@@ -250,7 +258,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
     ///bouton 5
     m_boite_boutons.add_child(m_bouton5);
-     m_bouton5.set_frame(0,135,78,44);
+    m_bouton5.set_frame(0,135,78,44);
     m_bouton5.set_bg_color(BLEU);
 
     m_bouton5.add_child(m_bouton5_label);
@@ -272,7 +280,7 @@ void Graph::recuperation(std::string nom1)
     {
         int v1 = 0;
         int v2 = 0 ;
-        int idx, x,y, maxi, mini, id_vert1, id_vert2;
+        unsigned int idx, x,y, maxi, mini, id_vert1, id_vert2;
         double value, weight;
         std::string pic_name, thing_name;
         fichier >> v1;
@@ -309,7 +317,11 @@ void Graph::update(std::string nom)
 {
 
     int *x = new int;
+    int *y = new int;
+    bool *z = new bool;
+    *y = -1;
     *x = -1;
+    *z = false;
     if (!m_interface)
         return;
 
@@ -322,7 +334,7 @@ void Graph::update(std::string nom)
     m_interface->m_top_box.update();
 
     for (auto &elt : m_vertices)
-        elt.second.post_update(x);
+        elt.second.post_update(x, y, z);
     for (auto &elt : m_edges)
         elt.second.post_update();
 
@@ -336,13 +348,13 @@ void Graph::update(std::string nom)
     /// BOUTONS
 
 
-        //sauvegarder
+    //sauvegarder
 //        sauvegarde(m_vertices, nom);
 
     if (m_interface->m_bouton2.clicked()) ///ne marche pas trop
     {
         //changer de réseau
-      key[KEY_R]=true;
+        key[KEY_R]=true;
 
     }
     if (m_interface->m_bouton3.clicked())
@@ -370,7 +382,18 @@ void Graph::update(std::string nom)
         enleversommet(*x);
     }
 
+//    if( *y > -1 && *z == true)
+//    {
+//        z = false;
+//        calcul_K(*y);
+//        calcul_Coeff(*y);
+//    }
+
+
     delete x;
+    delete y;
+    delete z;
+evol_pop();
 }
 
 /// Aide à l'ajout de sommets interfacés
@@ -665,7 +688,100 @@ void Graph::clear_map()
 }
 
 
+void Graph::ajoutsommet()
+{
 
+    std::map<int, Vertex>::iterator it;
+    std::set<int>::iterator it1;
+    std::set<int> temp;
+    int idx = 0;
+    double value;
+    int x;
+    int y;
+    std::string thing_name;
+    std::string  pic_name;
+
+
+    for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+    {
+        temp.insert(m_vertices[it->first].m_interface->getidx());
+
+    }
+
+    it1 = temp.end();
+
+    idx = (*it1)+1;
+
+
+    std::cout << "veuillez renter les coord du sommet, sa valeur et son nom" << std::endl;
+    std::cin >> x >> y >> value >> thing_name;
+    int maxi = value + value*0.8;
+    int mini = 0;
+
+    pic_name = thing_name + ".bmp";
+
+
+
+
+    add_interfaced_vertex(idx, value,x,y,mini, maxi, thing_name, pic_name);
+
+
+    temp.erase(temp.begin(),temp.end());
+
+
+}
+
+float Graph::calcul_K(int idx)
+{
+
+//    unsigned int coeff = 1; /// penser a l'ajouter au fichier !!!!!
+    Vertex &som = m_vertices.at(idx);
+
+    int y = 0;
+    int K = m_vertices.at(idx).m_value;
+//    m_vertices.at(idx).m_K = 0;
+    for (unsigned int i = 0 ; i < som.m_out.size() ; i++ )
+    {
+        Edge &ar = m_edges.at(som.m_out[i]);
+        y = m_vertices.at(ar.m_from).m_value * ar.m_weight;
+       K = K + y;
+
+
+    }
+    if(som.m_out.size() == 0)
+    {
+        K = m_vertices.at(idx).m_value/2;
+    }
+
+
+
+
+    return K;
+
+
+}
+
+float Graph::calcul_Coeff(int idx)
+{
+//    int coeff = 1; /// penser a l'ajouter au fichier !!!!!
+    Vertex &som = m_vertices.at(idx);
+
+    int y = 0;
+    int Coeff = 0;
+//    m_vertices.at(idx).m_K = 0;
+    for (unsigned int i = 0 ; i < som.m_in.size() ; i++ )
+    {
+        Edge &ar = m_edges.at(som.m_in[i]);
+        y = m_vertices.at(ar.m_to).m_value * ar.m_weight;
+       Coeff = Coeff + y;
+
+
+
+    }
+
+//    std::cout << m_vertices.at(m_edges.at(som.m_in[1]).m_from).m_value * m_edges.at(som.m_in[1]).m_weight << "                 eeeeeeeeeeeeeeeeeeeeeee" << std::endl;
+    return Coeff;
+}
 
 
 
@@ -967,8 +1083,8 @@ void Graph::composante_fortement_connexe()
         tabSecondPassage.push_back(-1);
         composanteFortementConnexe.push_back(-1);
     }
-  //  tabPremierPassage[s]=1;
-   // tabSecondPassage[s]=1;
+    //  tabPremierPassage[s]=1;
+    // tabSecondPassage[s]=1;
 
 }
 
@@ -976,29 +1092,29 @@ void Graph::composante_fortement_connexe()
 std::vector<int> Graph::BFS()
 {
     std::vector<int> vecteur;
-    for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end();it++)
-     {
-       it->second.m_marque=false;
-     }
+    for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end(); it++)
+    {
+        it->second.m_marque=false;
+    }
     std::queue<int> file;
     auto it = m_vertices.begin();
     int s = it->first;
     file.push(s);
     while(!file.empty())
     {
-         s = file.front();
-         vecteur.push_back(s);
+        s = file.front();
+        vecteur.push_back(s);
         std::cout <<s<<" ";  /// le stocker ici
         file.pop();
-        for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end();itera++)  ///parcourt des adjacents de s
+        for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end(); itera++) ///parcourt des adjacents de s
         {
             if(itera->second.m_from==s)     /// on regarde les adjacents de s
             {
-               if(m_vertices[itera->second.m_to].m_marque==false)       /// on regarde sils sont pas marqués
-               {
-                m_vertices[itera->second.m_to].m_marque=true;
-                file.push(itera->second.m_to);
-               }
+                if(m_vertices[itera->second.m_to].m_marque==false)       /// on regarde sils sont pas marqués
+                {
+                    m_vertices[itera->second.m_to].m_marque=true;
+                    file.push(itera->second.m_to);
+                }
             }
             if (itera->second.m_to==s)
             {
@@ -1016,45 +1132,177 @@ std::vector<int> Graph::BFS()
 
 }
 
-void Graph::ajoutsommet()
+
+void Graph::evol_pop()
 {
+    int coeff(0), K(0);
 
-    std::map<int, Vertex>::iterator it;
-    std::set<int>::iterator it1;
-    std::set<int> temp;
-     int idx = 0;
-            double value;
-            int x;
-            int y;
-            std::string thing_name;
-            std::string  pic_name;
-
-
-    for(it = m_vertices.begin(); it != m_vertices.end(); it++)
+    std::vector <int> valeurs(m_vertices.size());
+    for (const auto& elem : m_vertices)
     {
-        temp.insert(m_vertices[it->first].m_interface->getidx());
+        valeurs[elem.first] = m_vertices[elem.first].m_value;
 
+        std::cout << "elements : " << valeurs[elem.first] << std::endl;
+        coeff = calcul_Coeff(elem.first);
+        K = calcul_K(elem.first);
+
+        std::cout << "K : " << K << std::endl;
+int y = 1-elem.second.m_value/K;
+        int Nt = elem.second.m_value;
+
+        if(Nt + (0.1 * Nt * y ) - coeff < 0)
+            valeurs[elem.first] = 0;
+        else if(elem.second.m_out.size() == 0)
+        {
+            valeurs[elem.first] = valeurs[elem.first];
+        }
+        else
+        valeurs[elem.first] = Nt + (0.1 * Nt * y ) - coeff;
+    }
+    for (auto& elem : m_vertices)
+    {
+        elem.second.m_value = valeurs[elem.first];
     }
 
-it1 = temp.end();
+//    double coeff=0, K=0;
+//    std::vector <int> temp(m_vertices.size());
+//
+//
+//
+//    for (const auto& elem : m_vertices)
+//    {
+//        Vertex &popv = m_vertices.at(elem.first);
+//
+//
+//
+//
+//        for(unsigned int i = 0; i < popv.m_in.size(); i++)
+//        {
+//            Edge &pope = m_edges.at(popv.m_in[i]);
+//
+//            temp[elem.first] = m_vertices[elem.first].m_value;
+//
+//
+//            coeff = calcul_Coeff(elem.first);
+//            K = calcul_K(elem.first);
+//
+//            int y = (1-elem.second.m_value)/K;
+//            int Nt = elem.second.m_value;
+//
+//            if(Nt + (0.000000001 * Nt * y ) - coeff < 0)
+//               temp[elem.first] = 0;
+//
+//            else
+//                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+////
+//            if(m_vertices[elem.first].m_in.size() == 0)
+//                m_vertices.at(pope.m_from).m_value = Nt + (1 * Nt * y ) - coeff;
+//
+//
+//
+//
+//        }
+//
+////m_vertices[elem.first].m_value = temp[elem.first];
+//
+//
+//    for ( auto& elem : m_vertices)
+//    {
+//        elem.second.m_value = temp[elem.first];
+//    }
+//
+// }
 
-   idx = (*it1)+1;
+
+//
+//    std::map<int, Vertex>::iterator it;
+//
+//    std::vector<int> temp;
+
+//
+//    int Coeff;
+//    int K;
+//
+//
+//    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
+//    {
+//        temp[it->first] = m_vertices[it->first].m_value;
+//
+//        Coeff = calcul_Coeff(it->first);
+//        K = calcul_K(it->first);
+//
+//        int x = (1 - m_vertices[(it->first)].m_value )/ K;
+//        int Nt = m_vertices[(it->first)].m_value;
+//
+//        if(Nt + (0.001 * Nt * x ) - Coeff > 0)
+//        temp[it->first] = Nt + (0.001 * Nt * x ) - Coeff;
+//        else
+//            temp[(it->first)] =0;
+//
+//    }
+//
+//    for(it = m_vertices.begin(); it != m_vertices.end(); it ++)
+//    {
+//        m_vertices[it->first].m_value = temp[it->first];
+//
+//
+//    }
 
 
-   std::cout << "veuillez renter les coord du sommet, sa valeur et son nom" << std::endl;
-   std::cin >> x >> y >> value >> thing_name;
-int maxi = value + value*0.8;
-             int mini = 0;
-
-   pic_name = thing_name + ".bmp";
 
 
-
-
-    add_interfaced_vertex(idx, value,x,y,mini, maxi , thing_name, pic_name);
-
-
-    temp.erase(temp.begin(),temp.end());
-
+//    for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+//    {
+//        if(m_vertices.at(it->first).m_in.size() == 0 )
+//        {
+//                     temp.push_back(m_vertices.at(it->first).m_value + 0.000001 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0*(calcul_Coeff(it->first)));
+//
+//        }
+//        if(m_vertices.at(it->first).m_out.size() == 0 )
+//        {                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+//
+//        }
+//        if(m_vertices.at(it->first).m_in.size() == 0  && m_vertices.at(it->first).m_out.size() == 0)
+//        {
+//                     temp.push_back(m_vertices.at(it->first).m_value + 0.1 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+//
+//        }
+//        else
+//            {
+//                         temp.push_back(m_vertices.at(it->first).m_value + 0.00001 *  m_vertices.at(it->first).m_value *((1 -  m_vertices.at(it->first).m_value )/calcul_K(it->first) ) - 0.1*(calcul_Coeff(it->first)));
+//
+//
+//        }
+//
+//
+//
+//std::cout << m_vertices.at(it->first).m_value << "      rrrrrrrrrrrrrrrrrrrrrrrrrrrr" << std::endl;
+//
+//    }
+//
+//     for(it = m_vertices.begin(); it != m_vertices.end() ; it++ )
+//    {
+//
+//          if(temp[it->first] > 0)
+//            m_vertices.at(it->first).m_value = temp[it->first];
+//
+//          else
+//             m_vertices.at(it->first).m_value = 0;
+//                coeff = 0;
+//
+//            else
+//                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+//                coeff = 0;
+//
+//            else
+//                temp[elem.first] = Nt + (0.00001 * Nt * y ) - coeff;
+//
+//
+//
+//
+//    }
 
 }
+
+
+

@@ -155,7 +155,8 @@ void mettre_a_jour()
 
 void init()
 {
-    if (page) return;
+    if (page)
+        return;
 
     srand(time(NULL));
 
@@ -199,7 +200,8 @@ void init()
 
 void fermer_allegro()
 {
-    if (!page) return;
+    if (!page)
+        return;
     destroy_bitmap(page);
     page=NULL;
     allegro_exit();
@@ -207,13 +209,15 @@ void fermer_allegro()
 
 void buf_effacer_page()
 {
-    if (!page) return;
+    if (!page)
+        return;
     clear_to_color(page, page_color);
 }
 
 void buf_afficher_page()
 {
-    if (!page) return;
+    if (!page)
+        return;
     acquire_screen();
     blit(page, screen, 0, 0, 0, 0, SCREEN_W, SCREEN_H);
     release_screen();

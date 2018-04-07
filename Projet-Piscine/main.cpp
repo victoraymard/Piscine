@@ -41,41 +41,41 @@ int main()
 void menu()
 {
 
-        BITMAP* fond ;
-        BITMAP* buffer ;
-        fond = load_bitmap("menu.jpg", NULL);
-        buffer = create_bitmap(SCREEN_W, SCREEN_H);
-        blit(fond, buffer, 0,0,0,0,800, 600);
-        blit(buffer, screen, 0,0,0,0,800, 600);
+    BITMAP* fond ;
+    BITMAP* buffer ;
+    fond = load_bitmap("menu.jpg", NULL);
+    buffer = create_bitmap(SCREEN_W, SCREEN_H);
+    blit(fond, buffer, 0,0,0,0,800, 600);
+    blit(buffer, screen, 0,0,0,0,800, 600);
 
-        grman::set_pictures_path("pics");
-        bool x = false, secu = false;
-        Graph g;
-        std::string nom1 = "graphe1";
-        std::string nom2 = "graphe1bis";
-        std::string nom3 = "graphe2";
+    grman::set_pictures_path("pics");
+    bool x = false, secu = false;
+    Graph g;
+    std::string nom1 = "graphe1";
+    std::string nom2 = "graphe1bis";
+    std::string nom3 = "graphe2";
 
 
-while ( !key[KEY_ESC] )
+    while ( !key[KEY_ESC] )
     {
-/*if( secu == false)
-            {
-                secu = true;
-                std::string nom1 = "graphe1";
-                g.recuperation(nom1);
-            }
+        /*if( secu == false)
+                    {
+                        secu = true;
+                        std::string nom1 = "graphe1";
+                        g.recuperation(nom1);
+                    }
 
 
-        if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )
-        {
-            x = true;*/
+                if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )
+                {
+                    x = true;*/
 
 
-      ///---------------------------------------------------------------------
+        ///---------------------------------------------------------------------
 
-     x= false;
+        x= false;
 
-    std::string nom = " ";
+        std::string nom = " ";
         secu=false;
 
         if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 215< mouse_y && mouse_y < 260 )///graphe1
@@ -90,7 +90,7 @@ while ( !key[KEY_ESC] )
                 g.recuperation(nom1);
 
             }
-             while (x == true)
+            while (x == true)
             {
 
 
@@ -109,9 +109,9 @@ while ( !key[KEY_ESC] )
 
             }
         }
-            else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 350< mouse_y && mouse_y < 380 )///graphe2
+        else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 350< mouse_y && mouse_y < 380 )///graphe2
         {
-              key[KEY_R] = false;
+            key[KEY_R] = false;
             x = true;
             if( secu == false)
             {
@@ -119,7 +119,7 @@ while ( !key[KEY_ESC] )
                 g.recuperation(nom2);
 
             }
-             while (x == true)
+            while (x == true)
             {
 
 
@@ -138,16 +138,16 @@ while ( !key[KEY_ESC] )
 
             }
         }
-           else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
+        else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
         {
-              key[KEY_R] = false;
+            key[KEY_R] = false;
             x = true;
             if( secu == false)
             {
                 secu = true;
                 g.recuperation(nom3);
             }
-             while (x == true)
+            while (x == true)
             {
 
 
@@ -170,6 +170,6 @@ while ( !key[KEY_ESC] )
 
 
 
-        }
     }
+}
 END_OF_MAIN();
