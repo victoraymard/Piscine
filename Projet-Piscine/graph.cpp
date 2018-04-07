@@ -5,9 +5,6 @@
 #include <sstream>
 #include <fstream>
 #include<stack>
-#include<queue>
-#include <set>
-#include<algorithm>
 namespace patch
 {
 template < typename T > std::string to_string( const T& n )
@@ -26,7 +23,6 @@ template < typename T > std::string to_string( const T& n )
 VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std::string thing_name,std::string pic_name, int pic_idx)
 {
     m_idx = idx;
-    m_thing = thing_name;
 
 
     // La boite englobante
@@ -78,7 +74,6 @@ VertexInterface::VertexInterface(int idx, int x, int y, int mini, int maxi, std:
     m_nom_animal.add_child(m_nom_animal_label);
     m_nom_animal_label.set_message(thing_name);
     m_nom_animal_label.set_color(MARRONSOMBRE);
-
 
 
 
@@ -195,16 +190,16 @@ void Edge::post_update()
 /// éléments qui seront ensuite ajoutés lors de la mise ne place du Graphe
 GraphInterface::GraphInterface(int x, int y, int w, int h)
 {
-    m_top_box.set_dim(800,600);
+    m_top_box.set_dim(1000,740);
     m_top_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
 
     m_top_box.add_child(m_tool_box);
     m_tool_box.set_dim(80,720);
     m_tool_box.set_gravity_xy(grman::GravityX::Left, grman::GravityY::Up);
-    m_tool_box.set_bg_color(ROUGE);
+    m_tool_box.set_bg_color(BLANCBLEU);
 
     m_top_box.add_child(m_main_box);
-    m_main_box.set_dim(740,600);
+    m_main_box.set_dim(908,720);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
     m_main_box.set_bg_color(BLEUCLAIR);
 
@@ -242,27 +237,18 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
     /// bouton 4
     m_boite_boutons.add_child(m_bouton4);
-    m_bouton4.set_frame(0,179,78,44);
+    m_bouton4.set_frame(0,135,78,44);
     m_bouton4.set_bg_color(ROUGESOMBRE);
 
     m_bouton4.add_child(m_bouton4_label);
     m_bouton4_label.set_message("EXIT");
-
-    ///bouton 5
-    m_boite_boutons.add_child(m_bouton5);
-     m_bouton5.set_frame(0,135,78,44);
-    m_bouton5.set_bg_color(BLEU);
-
-    m_bouton5.add_child(m_bouton5_label);
-    m_bouton5_label.set_message("+ SOMMET");
-
 }
 
 
 
 void Graph::recuperation(std::string nom1)
 {
-    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
+    m_interface = std::make_shared<GraphInterface>(50, 0, 800, 600);
 
     std::string n = nom1 + ".txt" ;
 
@@ -305,9 +291,8 @@ void Graph::recuperation(std::string nom1)
 }
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
-void Graph::update(std::string nom)
+void Graph::update()
 {
-
     int *x = new int;
     *x = -1;
     if (!m_interface)
@@ -330,19 +315,21 @@ void Graph::update(std::string nom)
     /// TOUCHES CLAVIER
     if (key[KEY_B])
     {
-        sauvegarde(m_vertices,nom);
+        sauvegarde(m_vertices);
     }
 
     /// BOUTONS
 
-
+    if (m_interface->m_bouton1.clicked())
+    {
         //sauvegarder
-//        sauvegarde(m_vertices, nom);
-
+        sauvegarde(m_vertices);
+    }
     if (m_interface->m_bouton2.clicked()) ///ne marche pas trop
     {
         //changer de réseau
-      key[KEY_R]=true;
+        //key[KEY_R]=true;
+        forte_conexite();
 
     }
     if (m_interface->m_bouton3.clicked())
@@ -359,13 +346,7 @@ void Graph::update(std::string nom)
 
     }
 
-    if(m_interface->m_bouton5.clicked())
-    {
-        ajoutsommet();
-
-    }
-
-    if (*x > -1)
+    if (*x > -1 && *x < m_vertices.size())
     {
         enleversommet(*x);
     }
@@ -414,12 +395,14 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
 }
 
 
-void Graph::sauvegarde(std::map<int, Vertex> m_vertices, std::string nom)
+void Graph::sauvegarde(std::map<int, Vertex> m_vertices)
 {
     std::string buff;
 
-
-    std::ofstream fichier(nom+".txt",std::ios::out|std::ios::trunc);
+    std::string nomFichier = "";
+    std::cout <<"quel est le nom du fichier ?\n";
+    std::cin >> nomFichier;
+    std::ofstream fichier(nomFichier+".txt",std::ios::out|std::ios::trunc);
 
     std::map<int, Vertex>::iterator it;
     std::map<int, Edge>::iterator it1;
@@ -431,7 +414,7 @@ void Graph::sauvegarde(std::map<int, Vertex> m_vertices, std::string nom)
     for(it = m_vertices.begin(); it != m_vertices.end(); it++)
         fichier<<it->first<<" "<<m_vertices[it->first].m_value<<" "
                << m_vertices[it->first].m_interface->m_top_box.get_posx()
-               <<" "<<m_vertices[it->first].m_interface->m_top_box.get_posy() << " " << m_vertices[it->first].m_interface->getthing()
+               <<" "<<m_vertices[it->first].m_interface->m_top_box.get_posy()
                << " "<<m_vertices[it->first].m_interface->m_img.m_pic_name<<  std::endl;
 
     for(it1 = m_edges.begin(); it1 != m_edges.end(); it1++)
@@ -596,8 +579,6 @@ void Graph::test_remove_edge(int eidx)
 void Graph::enleversommet(int vidx)
 {
     Vertex &remver = m_vertices.at(vidx);
-    std::cout << "  eeeeeeeeeeeeeeeeeeee           "  << std::endl;
-
 
     int i = remver.m_in.size()-1;
     while (!remver.m_in.empty())
@@ -665,6 +646,161 @@ void Graph::clear_map()
 }
 
 
+/*void Graph::forte_conexite()///ne marche pas si on supprime des sommets --> utiliser des maps à la place des vecteurs
+{
+    ///déclaration des variables
+    std::vector<bool> tabSucesseurs;
+    std::vector<bool> tabPredecesseurs;
+    std::vector<bool> tabComposanteFortementConnexe;
+    std::vector<int> tabAffichage;
+
+    std::vector<int> verif;
+    bool dejaAffiche;
+
+    bool algoTermine ;
+    int indiceSommet, indiceSommetBis;
+    std::stack<int> pile;
+
+
+    ///initialisation
+
+    for(unsigned int i = 0; i <m_vertices.size(); i++)
+    {
+        tabSucesseurs.push_back(false);
+        tabPredecesseurs.push_back(false);
+        tabComposanteFortementConnexe.push_back(false);
+    }
+
+    algoTermine= false;
+    indiceSommetBis = 0;//on commence par le premier sommet arbitrairement--> attention si suppression
+    ///mettre m_vertices.begin()
+    indiceSommet = indiceSommetBis;
+    //pile.push(indiceSommet);
+
+    for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)//on initialise les marques à false
+    {
+        it->second.m_marque= false;
+    }
+
+
+    ///début algo
+
+    while(!algoTermine)
+    {
+        /// dans le sens des succeseurs
+        pile.push(indiceSommet);
+        // on tente le coup du bfs
+        tabSucesseurs[indiceSommet]=true;
+
+        while(!pile.empty())
+        {
+               //std::cout << "je passe par la "<<indiceSommet<<std::endl;
+            indiceSommet = pile.top();
+            //std::cout <<indiceSommet<<" ";
+            pile.pop();
+
+            // boucle pour les sommets adjacents
+
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)//on initialise les marques à false
+            {
+
+                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
+                if (it->second.m_from == indiceSommet)//si il pointe vers un autre sommet
+                {
+                    //on vérifie que le sommet n'est pas marqé
+                    if(tabSucesseurs[it->second.m_to]==false)
+                    {
+                        //on marque le sommet
+                        tabSucesseurs[it->second.m_to]= true;
+                        //on le push
+                        pile.push(it->second.m_to);
+                       // std::cout <<"on push en sucesseur " <<it->second.m_to<<std::endl;
+                    }
+                }
+            }
+        }
+
+        ///dans l'autre sens
+        indiceSommet =indiceSommetBis; // on réinitialise l'indice
+        tabPredecesseurs[indiceSommet] = true;
+        pile.push(indiceSommet);
+        while(!pile.empty())
+        {
+            //std::cout << "je passe par la "<<indiceSommet<<std::endl;
+            indiceSommet = pile.top();
+            //std::cout <<indiceSommet<<" ";
+            pile.pop();
+
+            // boucle pour les sommets adjacents
+
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)//on initialise les marques à false
+            {
+
+                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
+                if (it->second.m_to == indiceSommet)//si il pointe vers un autre sommet
+                {
+                    //std::cout << "indice from " << it->second.m_from<<" bool "<<tabPredecesseurs[it->second.m_from]<< std::endl;
+                    //on vérifie que le sommet n'est pas marqé
+                    if(tabPredecesseurs[it->second.m_from]==false)
+                    {
+                        //on marque le sommet
+                        tabPredecesseurs[it->second.m_from]= true;
+                        //on le push
+                        pile.push(it->second.m_from);
+                        //std::cout <<"on push en predecesseur " <<it->second.m_to<<std::endl;
+                    }
+                }
+            }
+        }
+
+        ///on rempli le dernier tab et on affiche
+
+        //std::cout << "tab fortement " <<tabPredecesseurs[6]<<tabSucesseurs[6]<<std::endl;
+        std::cout << "le(s) sommet(s) suivant(s) appartienne(nt) a une composante fortement connexe\n";
+        for(unsigned int i = 0; i <m_vertices.size(); i++)
+        {
+            if(tabPredecesseurs[i] == true && tabSucesseurs[i] == true)
+            {
+                tabComposanteFortementConnexe[i]= true;
+
+                dejaAffiche = false;
+
+                for(unsigned int j = 0; j<verif.size(); j++)
+                    if(verif[j]==i &&tabComposanteFortementConnexe[i] )
+                        dejaAffiche=true;
+
+                if(!dejaAffiche)
+                    std::cout <<i<<" ";
+
+                verif.push_back(i);
+            }
+        }
+        std::cout<<std::endl;
+
+
+        ///on vide les deux autres (sucesseur et predecesseur)
+
+        for(unsigned int i = 0; i <m_vertices.size(); i++)
+        {
+            tabPredecesseurs[i]=false;
+            tabSucesseurs[i]=false;
+        }
+
+        /// on regarde si tous les sommets on été marqués
+        algoTermine = true;
+        for(unsigned int i =0; i<tabComposanteFortementConnexe.size(); i++)
+        {
+            if (tabComposanteFortementConnexe[i] == false)
+            {
+                algoTermine = false;
+                indiceSommetBis = i;///si il reste des sommets, on change de sommet
+                indiceSommet = i;
+            }
+        }
+    }
+}*/
+
+
 
 
 
@@ -694,107 +830,35 @@ void Graph::clear_map()
 
 
 
-int Graph::k_connexite()
+void Graph::k_connexite()
 {
 
-    std::map<int,Vertex>map_de_sauvegarde=m_vertices; /// on sauvegarde m_vertices
-    std::map<int,Edge>map_de_sauvegarde2=m_edges;     ///sauvegarde des aretes
-    std::vector<int> vect_reference=BFS();
-
-///PREMIER CAS ON REGARDE SI KMIN=1 -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet et voir si ça impact la connexité
+    std::map<int,Vertex>map_de_transition=m_vertices;
+//    std::vector<int> vect_reference=BFS(map_de_transition);
+    for(std::map<int,Vertex>::iterator it=map_de_transition.begin(); it!=map_de_transition.end(); it++)
     {
-        m_vertices=map_de_sauvegarde;   ///on recharge les deux map a chaque fois, cest pour pouvoir tester pour chaque sommet
-        m_edges=map_de_sauvegarde2;     /// sinon on effacerait chaque sommet un par un ...
-
-        for(std::map<int,Edge>::iterator iterat=m_edges.begin();iterat!=m_edges.end();iterat++) /// on erase toutes les aretes comportant le sommet supprimé
-        {
-            if(iterat->second.m_to==k || iterat->second.m_from==k)
-            {
-                m_edges.erase(iterat->first);
-            }
-        }
-        int entier=k;
-        m_vertices.erase(k);
-
-        std::vector<int>vecteur_de_transition=BFS();
-        vecteur_de_transition.push_back(entier);
-
-        std::sort(vecteur_de_transition.begin(),vecteur_de_transition.end());   /// tri des 2 vecteurs
-        std::sort(vect_reference.begin(),vect_reference.end());
-
-        if(vect_reference!=vecteur_de_transition)            /// si les deux vecteurs sont differents alors la suppression du sommet k a changé la connexité
-        {
-            std::cout<<"kmin=1"<<"Il suffit d'enlever le sommet : "<<k<<" pour rendre le graphe non connexe"<<std::endl;
-            return k;
-        }
-    }
-
-    m_vertices=map_de_sauvegarde;     /// chargement des map de depart
-    m_edges=map_de_sauvegarde2;
-
-
-/// DEUXIEME CAS ON REGARDE SI KMIN=2 ------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    for(unsigned int k=0;k<m_vertices.size();k++)  /// on va erase sommet par sommet et voir si ça impact la connexité
-    {
-        m_vertices=map_de_sauvegarde;
-        m_edges=map_de_sauvegarde2;
-
-        for(std::map<int,Edge>::iterator iterat=m_edges.begin();iterat!=m_edges.end();iterat++) /// on erase toutes les aretes comportant le sommet supprimé
-        {
-            if(iterat->second.m_to==k || iterat->second.m_from==k)
-            {
-                m_edges.erase(iterat->first);
-            }
-        }
-        int entier=k;
-        m_vertices.erase(k);  /// on va prendre des des doublets de sommets, lui ce sera le premier du doublet
-
-        std::map<int,Vertex> map_de_sauvegarde3=m_vertices;
-        std::map<int,Edge>map_de_sauvegarde4=m_edges;
-
-        for(std::map<int,Vertex>::iterator it=m_vertices.begin();it!=m_vertices.end();it++)
-        {
-            m_vertices=map_de_sauvegarde3;
-            m_edges=map_de_sauvegarde4;
-
-            for(std::map<int,Edge>::iterator iterat=m_edges.begin();iterat!=m_edges.end();iterat++) /// on erase toutes les aretes comportant le sommet supprimé (le deuxieme du doublet)
-        {
-            if(iterat->second.m_to==it->first || iterat->second.m_from==it->first)
-            {
-                m_edges.erase(iterat->first);
-            }
-        }
-
-         m_vertices.erase(it->first);
-
-         std::vector<int>vecteur_de_transition2=BFS(); /// le vecteur de composante connexe obtenu par BFS en ayant préalablement enlevé deux sommets
-         vecteur_de_transition2.push_back(k);
-         vecteur_de_transition2.push_back(it->first);
-         std::sort(vecteur_de_transition2.begin(), vecteur_de_transition2.end());
-         std::sort(vect_reference.begin(),vecteur_de_transition2.end());
-
-
-         if(vect_reference!=vecteur_de_transition2)
-         {
-             std::cout<<"kmin=2"<<" Il suffit d'enlever les sommets :"<<k<<" et "<<it->first<<" pour rendre le graphe non connexe"<<std::endl;
-         }
-
-
-        }
+        map_de_transition.erase(it->first);
+        // std::vector<int> vect=BFS(map_de_transition);
+        // algo de tri pour faire en sorte que les 2 soient rangés pareil
+        //on ajoute le sommet effacé dans le premoer
+        // on regarde sils sont egaux
+        //if vect_reference==vect
+        //on stock : it->first
+        // on incrémente un compteur
+        // else
+        // on affiche it-> first
+        //"il suffit d'enlever le sommet it -> first pour que le graphe ne soit plus connexe"
+        ///BFS SUR LA NOUVELLE MAP DE TRANSITION
+        /// SI ON TROUVE LA MEME COMPOSANTE CONNEXE (EXCEPTE LE SOMMET QUON A ERASE)
+        /// ON CONTINUE
+        /// ON LE STOCK
+        /// ON ERASE UN AUTRE SOMMET DE MAP DE TRANSITION
+        ///SINON ON NOTE LE SOMMET QUON A ERASE : ON LE STOCK ON
+        ///
 
     }
-
-
-     /// kmin=3 à faire .....
-
-     return 0;
 
 }
-
-
 
 void Graph::kosaraju()
 {
@@ -954,11 +1018,16 @@ void Graph::bfs()
 
 void Graph::composante_fortement_connexe()
 {
+    int indiceSommet = 0;
+
     std::vector<int> tabPremierPassage;
     std::vector<int>tabSecondPassage;
     std::vector<int>composanteFortementConnexe;
     std::vector<bool>tabMarque;
-
+    int x, y;
+    int ajoute =1;
+    //on crée notre matrice d'adjacence
+    std::vector<std::vector<bool>> tabAdjacence;
     //initialisation de tabmarque
     for(unsigned int i = 0; i <m_vertices.size(); i++)
     {
@@ -966,95 +1035,179 @@ void Graph::composante_fortement_connexe()
         tabPremierPassage.push_back(-1);
         tabSecondPassage.push_back(-1);
         composanteFortementConnexe.push_back(-1);
+        for(unsigned int j =0 ; j<m_vertices.size(); j++)
+            tabAdjacence[i][j]=false;
     }
-  //  tabPremierPassage[s]=1;
-   // tabSecondPassage[s]=1;
+
+//on remplie la matrice avec les valeurs de s aretes
+    int i = 0;
+    /* for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
+    {
+        tabAdjacence[it->second.m_from][it->second.m_to]=true;
+    }*/
+
+
+    tabPremierPassage[indiceSommet]=1;
+    tabSecondPassage[indiceSommet]=1;
+
+    ///recherche des composantes connexe à ajouter dans c1
+    while(ajoute)
+    {
+        ajoute = 0;
+
+        // Pour tous les sommets x non marqués et connectés en partant de s
+        // Marquer chaque sommet x et connecter les sommets non marqués y adjacents à x
+
+
+    }
 
 }
 
-
-std::vector<int> Graph::BFS()
+void Graph::forte_conexite()///ne marche pas si on supprime des sommets --> utiliser des maps à la place des vecteurs
 {
-    std::vector<int> vecteur;
-    for(std::map<int,Vertex>::iterator it=m_vertices.begin(); it!=m_vertices.end();it++)
-     {
-       it->second.m_marque=false;
-     }
-    std::queue<int> file;
-    auto it = m_vertices.begin();
-    int s = it->first;
-    file.push(s);
-    while(!file.empty())
+    ///déclaration des variables
+    std::map< int,bool> tabSucesseurs;
+    std::map<int,bool> tabPredecesseurs;
+    std::map<int,bool> tabComposanteFortementConnexe;
+
+    std::map<int,int> verif;
+    bool dejaAffiche;
+
+    bool algoTermine ;
+    int indiceSommet, indiceSommetBis;
+    std::stack<int> pile;
+
+
+    ///initialisation
+
+    for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)//on initialise les marques à false
     {
-         s = file.front();
-         vecteur.push_back(s);
-        std::cout <<s<<" ";  /// le stocker ici
-        file.pop();
-        for(std::map<int,Edge>::iterator itera=m_edges.begin(); itera!=m_edges.end();itera++)  ///parcourt des adjacents de s
+        tabSucesseurs.insert(std::pair<int, bool>(it->first,false));
+        tabPredecesseurs.insert(std::pair<int, bool>(it->first,false));
+        tabComposanteFortementConnexe.insert(std::pair<int, bool>(it->first,false));
+    }
+
+    algoTermine= false;
+    indiceSommetBis = 0;//on commence par le premier sommet arbitrairement--> attention si suppression
+    ///mettre m_vertices.begin()
+    indiceSommet = indiceSommetBis;
+    pile.push(indiceSommet);
+
+
+    ///début algo
+
+    while(!algoTermine)
+    {
+        /// dans le sens des succeseurs
+        //on cherche toutes les composantes connexe (en tenant comte du ses des arcs) dans le sens normal (avec les sucesseurs)
+
+
+        indiceSommet =indiceSommetBis; // on réinitialise l'indice
+        pile.push(indiceSommet);
+        tabSucesseurs[indiceSommet]=true;
+
+        while(!pile.empty())
         {
-            if(itera->second.m_from==s)     /// on regarde les adjacents de s
+            indiceSommet = pile.top();
+            pile.pop();
+
+            // boucle pour les sommets adjacents
+
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
             {
-               if(m_vertices[itera->second.m_to].m_marque==false)       /// on regarde sils sont pas marqués
-               {
-                m_vertices[itera->second.m_to].m_marque=true;
-                file.push(itera->second.m_to);
-               }
-            }
-            if (itera->second.m_to==s)
-            {
-                if(m_vertices[itera->second.m_from].m_marque==false)
+                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
+                if (it->second.m_from == indiceSommet)//si il pointe vers un autre sommet
                 {
-                    m_vertices[itera->second.m_from].m_marque=true;
-                    file.push(itera->second.m_from);
+                    //on vérifie que le sommet n'est pas marqé
+                    if(tabSucesseurs[it->second.m_to]==false)
+                    {
+                        //on marque le sommet
+                        tabSucesseurs[it->second.m_to]= true;
+                        //on le push
+                        pile.push(it->second.m_to);
+                    }
                 }
             }
         }
 
 
-    } ///checker si tous les sommets sont marqués
-    return vecteur;
+        ///dans l'autre sens
+        //on cherche toutes les composantes connexe (en tenant comte du ses des arcs) dans le sens inverse (avec les predecesseurs)
+        indiceSommet =indiceSommetBis; // on réinitialise l'indice
+        tabPredecesseurs[indiceSommet] = true;
+        pile.push(indiceSommet);
+        while(!pile.empty())
+        {
+            indiceSommet = pile.top();
+            pile.pop();
 
-}
+            // boucle pour les sommets adjacents
 
-void Graph::ajoutsommet()
-{
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
+            {
+                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
+                if (it->second.m_to == indiceSommet)//si il pointe vers un autre sommet
+                {
+                    //on vérifie que le sommet n'est pas marqé
+                    if(tabPredecesseurs[it->second.m_from]==false)
+                    {
+                        //on marque le sommet
+                        tabPredecesseurs[it->second.m_from]= true;
+                        //on le push
+                        pile.push(it->second.m_from);
+                    }
+                }
+            }
+        }
 
-    std::map<int, Vertex>::iterator it;
-    std::set<int>::iterator it1;
-    std::set<int> temp;
-     int idx = 0;
-            double value;
-            int x;
-            int y;
-            std::string thing_name;
-            std::string  pic_name;
+        ///on rempli le tab permettant de trouver les composantes fortement connexe et on affiche
+        //si on peut accéder depuis un sommet à un autre dans les deux sens (sucesseurs et predecesseurs), on a alors un circuit, et les deux sommets forment une composante fortement connexe
+
+        std::cout << "le(s) sommet(s) suivant(s) appartienne(nt) a une composante fortement connexe\n";
+        for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)
+        {
+            if(tabPredecesseurs[it->first] == true && tabSucesseurs[it->first] == true)//on regarde si le sommet est marqué sur les deux maps
+            {
+                tabComposanteFortementConnexe[it->first]= true;
+                dejaAffiche = false;
+
+                for (auto jt = verif.begin(); jt!=verif.end(); ++jt)
+                {
+                    if(verif[jt->first]==it->first &&tabComposanteFortementConnexe[it->first] )
+                        dejaAffiche=true;
+                }
+
+                if(!dejaAffiche)
+                    std::cout <<it->first<<" ";
+
+                verif.insert(std::pair<int, int>(it->first,it->first));///a quel endroit le ranger ?
+            }
+        }
+        std::cout<<std::endl;
 
 
-    for(it = m_vertices.begin(); it != m_vertices.end(); it++)
-    {
-        temp.insert(m_vertices[it->first].m_interface->getidx());
+        ///on vide les deux autres (sucesseur et predecesseur)
+        for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)
+        {
+            tabSucesseurs.insert(std::pair<int, bool>(it->first,false));
+            tabPredecesseurs.insert(std::pair<int, bool>(it->first,false));
+        }
 
+        /// on regarde si tous les sommets on été marqués
+        algoTermine = true;
+        for (auto it = tabComposanteFortementConnexe.begin(); it!=tabComposanteFortementConnexe.end(); ++it)
+        {
+            if (tabComposanteFortementConnexe[it->first] == false)
+            {
+                algoTermine = false;
+                indiceSommetBis = it->first;///si il reste des sommets, on change de sommet
+                indiceSommet = it->first;
+            }
+        }
     }
-
-it1 = temp.end();
-
-   idx = (*it1)+1;
-
-
-   std::cout << "veuillez renter les coord du sommet, sa valeur et son nom" << std::endl;
-   std::cin >> x >> y >> value >> thing_name;
-int maxi = value + value*0.8;
-             int mini = 0;
-
-   pic_name = thing_name + ".bmp";
-
-
-
-
-    add_interfaced_vertex(idx, value,x,y,mini, maxi , thing_name, pic_name);
-
-
-    temp.erase(temp.begin(),temp.end());
-
-
 }
+
+
+
+
+

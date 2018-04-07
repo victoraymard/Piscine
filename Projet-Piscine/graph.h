@@ -122,14 +122,13 @@ class VertexInterface
         grman::WidgetText m_nom_animal_label;
 
         int m_idx;
-        std::string m_thing;
+
     public :
 
         // Le constructeur met en place les éléments de l'interface
         // voir l'implémentation dans le .cpp
         VertexInterface(int idx, int x, int y, int mini, int maxi, std::string thing_name, std::string pic_name="", int pic_idx=0);
         int getidx();
-        std::string getthing(){return m_thing;}
 };
 
 
@@ -294,9 +293,6 @@ class GraphInterface
         grman::WidgetButton m_bouton4;
         grman::WidgetText m_bouton4_label;
 
-        grman::WidgetButton m_bouton5;
-        grman::WidgetText m_bouton5_label;
-
         // A compléter éventuellement par des widgets de décoration ou
         // d'édition (boutons ajouter/enlever ...)
 
@@ -340,21 +336,19 @@ class Graph
 
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
-        void update(std::string nom);
+        void update();
         void recuperation(std::string nom);
-        void sauvegarde(std::map<int, Vertex> m_vertices, std::string nom);
+        void sauvegarde(std::map<int, Vertex> m_vertices);
         void remplissagemap(std::string path);
         void test_remove_edge(int eidx);
         void enleversommet(int idx);
-        int k_connexite();
+        void k_connexite();
         void clear_map();
         void add_edge();
         void kosaraju();
         void bfs();
         void composante_fortement_connexe();
-        std::vector<int> BFS();
-        void ajoutsommet();
-
+        void forte_conexite();
 };
 
 
