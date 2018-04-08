@@ -960,11 +960,11 @@ void Graph::evol_pop()
 
     unsigned int coeff(0), K(0);
 
-    std::vector <int> valeurs(m_vertices.size());
+    std::vector <int> temp(m_vertices.size());
 
     for (const auto& elem : m_vertices)
     {
-        valeurs[elem.first] = m_vertices[elem.first].m_value;
+        temp[elem.first] = m_vertices[elem.first].m_value;
 
         coeff = calcul_Coeff(elem.first);
 
@@ -982,18 +982,18 @@ void Graph::evol_pop()
         if (elem.second.m_in.empty())
         {
             if(K == 0)
-                valeurs[elem.first] = Nt - 0.000001;
+                temp[elem.first] = Nt - 0.000001;
 
             else
             {
 
                 if(Nt < 11)
             {
-               valeurs[elem.first] = Nt + 1;
+               temp[elem.first] = Nt + 1;
             }
             else
                 {
-                     valeurs[elem.first] =  Nt + (0.1 * Nt * y );
+                     temp[elem.first] =  Nt + (0.1 * Nt * y );
                 }
 
 
@@ -1016,42 +1016,42 @@ void Graph::evol_pop()
 
             if (m_test == true)
             {
-                valeurs[elem.first] = Nt + 1;
+                temp[elem.first] = Nt + 1;
             }
             else
-            valeurs[elem.first] = Nt + (0.001 * Nt * y ) - (0.0001 * coeff);
+            temp[elem.first] = Nt + (0.001 * Nt * y ) - (0.0001 * coeff);
 
         }
         ///Si ni successeur ni predecesseur
         else if (elem.second.m_out.empty() && elem.second.m_in.empty())
         {
-            valeurs[elem.first] = Nt + (0.0001 * Nt * y );
+            temp[elem.first] = Nt + (0.0001 * Nt * y );
 
         }
         ///Si les 2
         else
         {
             if(K == 0)
-                valeurs[elem.first] = Nt - 0.000001;
+                temp[elem.first] = Nt - 0.000001;
 
             else
             {
                 if(Nt < 11)
                 {
-                    valeurs[elem.first] = Nt + 1;
+                    temp[elem.first] = Nt + 1;
                 }
                 else
-                valeurs[elem.first] = Nt + (0.1 * Nt * y ) - (0.001 * coeff);
+                temp[elem.first] = Nt + (0.1 * Nt * y ) - (0.001 * coeff);
             }
 
         }
-        if (valeurs[elem.first] < 0)
-                valeurs[elem.first] = 0;
+        if (temp[elem.first] < 0)
+                temp[elem.first] = 0;
     }
 
     for (auto& elem : m_vertices)
     {
-        elem.second.m_value = valeurs[elem.first];
+        elem.second.m_value = temp[elem.first];
     }
 
 
