@@ -437,7 +437,7 @@ void Graph::update(std::string nom)
     if (m_interface->m_bouton1.clicked()) ///ne marche pas trop
     {
         //sauvegarde
-        sauvegarde_bis(m_vertices);
+        sauvegarde(m_vertices ,nom);
 
     }
 
