@@ -363,7 +363,7 @@ class Graph
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
         void update(std::string nom);
         void recuperation(std::string nom, std::string nom1);
-        void recuperation_bis();
+        void recuperation_bis(std::string nom);
         void sauvegarde(std::map<int, Vertex> m_vertices, std::string nom);
         void remplissagemap(std::string path);
         void test_remove_edge(int eidx);

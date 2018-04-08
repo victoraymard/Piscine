@@ -1,0 +1,41 @@
+13
+26
+0 38 692 38 vegetation vegetation.bmp
+1 38 1 113 insectes insectes.bmp
+2 477 749 257 deinonychus deinonychus.bmp
+3 477 156 200 diplodocus diplodocus.bmp
+4 477 460 602 anatotitan anatotitan.bmp
+5 247 108 1 tyrannosaure tyrannosaure.bmp
+6 377 429 26 triceratops triceratops.bmp
+7 11 522 221 stegosaure stegosaure.bmp
+8 99 451 378 abelisaure abelisaure.bmp
+9 577 159 479 velociraptor velociraptor.bmp
+10 157 1 339 saltopus saltopus.bmp
+11 247 721 567 daspletosaure daspletosaure.bmp
+12 487 19 583 deinonychus deinonychus.bmp
+0 3 0 1
+1 5 3 1
+2 4 0 1
+3 6 0 1
+4 7 0 1
+5 2 0 1
+6 9 6 1
+7 9 4 1
+8 9 5 1
+9 9 8 1
+10 5 4 1
+11 5 8 1
+12 5 2 1
+13 11 5 1
+14 12 5 1
+15 8 5 1
+16 8 4 1
+17 8 2 100
+18 8 11 1
+19 8 7 1
+20 7 12 1
+21 12 2 1
+22 9 10 1
+23 12 9 1
+24 12 10 1
+25 10 1 1

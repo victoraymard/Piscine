@@ -1,14 +1,18 @@
-5
-4
-0 45 298 39 Wisigoths Conanlebarbare.jpg
-1 34 172 236 Francs Conanlebarbare.jpg
-2 1000 478 364 Romains Centurion1.JPG
-3 100 400 50 Vandales Conanlebarbare.jpg
-4 100 400 50 Huns Huns.jpg
-0 0 2 45
-1 1 2 34
-2 3 2 40
-3 4 2 45
-
-
-
+7
+9
+0 0 529 57 Wisigoths Conanlebarbare.jpg
+1 1 475 236 Francs Conanlebarbare.jpg
+2 0 500 478 Romains Centurion1.JPG
+3 1 585 400 Vandales Conanlebarbare.jpg
+4 1 205 400 Huns Huns.jpg
+5 0 32 195 Lomboard Conanlebarbare.jpg
+6 0 203 60 gaulois gaulois.jpg
+0 0 6 1
+1 6 0 1
+2 6 4 1
+3 5 1 1
+4 4 5 1
+5 4 2 1
+6 2 4 1
+7 1 2 1
+8 2 3 1
