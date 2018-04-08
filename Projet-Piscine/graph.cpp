@@ -958,8 +958,8 @@ void Graph::forte_conexite()///ne marche pas si on supprime des sommets --> util
 void Graph::evol_pop()
 {
 
-    unsigned int coeff(0), K(0);
-
+    unsigned int coeff(0), K(0)  ;
+double K_pop(0);
     std::vector <int> temp(m_vertices.size());
 
     for (const auto& elem : m_vertices)
@@ -969,6 +969,9 @@ void Graph::evol_pop()
         coeff = calcul_Coeff(elem.first);
 
         K = calcul_K(elem.first);
+
+        K_pop = K/ m_vertices[elem.first].m_value;
+
 
         double y = 1-elem.second.m_value/K;
         double Nt = elem.second.m_value;
@@ -980,7 +983,7 @@ void Graph::evol_pop()
 
         ///Si pas de predecesseur
         if (elem.second.m_in.empty())
-        {
+        { std::cout << elem.first << "   " << K_pop << "              rrrrrrrrrrrrrrrrrrrrrrr " << std::endl;
             if(K == 0)
                 temp[elem.first] = Nt - 0.000001;
 
@@ -998,6 +1001,12 @@ void Graph::evol_pop()
 
 
 }
+
+if(K_pop < 50)
+{
+    temp[elem.first] = Nt - 1;
+}
+
 
 
         }
@@ -1043,6 +1052,12 @@ void Graph::evol_pop()
                 else
                 temp[elem.first] = Nt + (0.1 * Nt * y ) - (0.001 * coeff);
             }
+
+            if(K_pop < 50)
+{
+    temp[elem.first] = Nt - 1;
+}
+
 
         }
         if (temp[elem.first] < 0)
