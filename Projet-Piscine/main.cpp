@@ -1,3 +1,26 @@
+
+///AYMARD                 Projet d'informatique                       TD02
+///BALLAND                 Théorie des Graphes
+///CARABIN                   ING2,semestre 2
+
+
+/// graphe 1 : Réseau trophique des milieux marins de l'Antarctique
+/// graphe 2 : ...
+/// graphe 3 : ...
+
+
+///sources :
+///http://www.ece.fr/~fercoq/allegro/
+///https://openclassrooms.com/courses/lecture-et-ecriture-dans-les-fichiers-en-c++
+///http://www.cplusplus.com/reference/map/map/
+
+
+/// Guillaume Carabin : Travail en parallèle avec Hugo Dores et Jean-Baptiste Scelles pour certaines fonctions
+
+
+
+
+
 #include "grman/grman.h"
 #include <iostream>
 #include "graph.h"

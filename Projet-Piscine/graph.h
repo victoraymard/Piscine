@@ -368,13 +368,13 @@ class Graph
         void remplissagemap(std::string path);
         void test_remove_edge(int eidx);
         void enleversommet(int idx);
-        int k_connexite();
+        int k_connexite();  /// renvoie le kmin= nbr de sommet minimale a enlever pour briser la connxite du graphe
         void clear_map();
         void add_edge();
         void kosaraju();
         void bfs();
         void composante_fortement_connexe();
-        std::vector<int> BFS();
+        std::vector<int> BFS(); /// renvoie un vecteur contenant la compo connexe du graphe (attention il suppose que le graphe est entierement connexe)
         void ajoutsommet();
         float calcul_K(int x);
     float calcul_Coeff(int idx);
