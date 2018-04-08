@@ -336,6 +336,63 @@ void Graph::recuperation(std::string nom1)
     else
         std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
 }
+void Graph::recuperation_bis()
+{
+    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
+
+    std::string n = "forte_composante_connexe.txt" ;
+
+    int nombreDeComposanteConnexe=0;
+    std::ifstream fichier0("nombreDeComposanteConnexe.txt");
+    if (fichier0) fichier0>>nombreDeComposanteConnexe;
+
+    else
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier nombreDeComposanteConnexe." << std::endl;
+
+    std::ifstream fichier(n);
+
+    if(fichier)
+    {
+        ///déclaration / initialisation
+        int v1 = 0;
+        int v2 = 0 ;
+        unsigned int idx, x,y, maxi, mini, id_vert1, id_vert2;
+        double value, weight;
+        std::string pic_name, thing_name;
+
+        ///boucle
+        for(int i =0; i<nombreDeComposanteConnexe; i++ )
+        {
+            fichier >> v1;//nb sommets
+
+            for(int i = 0 ; i < v1 ; i++)
+            {
+                fichier >> idx;
+                fichier >> value;
+                fichier >> x;
+                fichier >>  y;
+                fichier >> thing_name;
+                fichier >>  pic_name;
+                maxi = value + value*0.8;
+                mini = 0;
+                add_interfaced_vertex(idx, value, x, y, mini, maxi, thing_name, pic_name);
+            }
+
+            fichier >> v2; //nb aretes
+            for (int i = 0 ; i < v2 ; i++)
+            {
+                fichier >> idx;
+                fichier >> id_vert1;
+                fichier >> id_vert2;
+                fichier >> weight;
+                add_interfaced_edge(idx,id_vert1, id_vert2, weight);
+            }
+        }
+    }
+    else
+        std::cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << std::endl;
+
+}
 
 /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
 void Graph::update(std::string nom)
@@ -822,151 +879,6 @@ void Graph::ajoutsommet()
 
 
 
-void Graph::forte_conexite()///ne marche pas si on supprime des sommets --> utiliser des maps à la place des vecteurs
-{
-    ///déclaration des variables
-    std::map< int,bool> tabSucesseurs;
-    std::map<int,bool> tabPredecesseurs;
-    std::map<int,bool> tabComposanteFortementConnexe;
-
-    std::map<int,int> verif;
-    bool dejaAffiche;
-
-    bool algoTermine ;
-    int indiceSommet, indiceSommetBis;
-    std::stack<int> pile;
-
-
-    ///initialisation
-
-    for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)//on initialise les marques à false
-    {
-        tabSucesseurs.insert(std::pair<int, bool>(it->first,false));
-        tabPredecesseurs.insert(std::pair<int, bool>(it->first,false));
-        tabComposanteFortementConnexe.insert(std::pair<int, bool>(it->first,false));
-    }
-
-    algoTermine= false;
-    indiceSommetBis = 0;//on commence par le premier sommet arbitrairement--> attention si suppression
-    ///mettre m_vertices.begin()
-    indiceSommet = indiceSommetBis;
-    pile.push(indiceSommet);
-
-
-    ///début algo
-
-    while(!algoTermine)
-    {
-        /// dans le sens des succeseurs
-        //on cherche toutes les composantes connexe (en tenant comte du ses des arcs) dans le sens normal (avec les sucesseurs)
-
-
-        indiceSommet =indiceSommetBis; // on réinitialise l'indice
-        pile.push(indiceSommet);
-        tabSucesseurs[indiceSommet]=true;
-
-        while(!pile.empty())
-        {
-            indiceSommet = pile.top();
-            pile.pop();
-
-            // boucle pour les sommets adjacents
-
-            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
-            {
-                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
-                if (it->second.m_from == indiceSommet)//si il pointe vers un autre sommet
-                {
-                    //on vérifie que le sommet n'est pas marqé
-                    if(tabSucesseurs[it->second.m_to]==false)
-                    {
-                        //on marque le sommet
-                        tabSucesseurs[it->second.m_to]= true;
-                        //on le push
-                        pile.push(it->second.m_to);
-                    }
-                }
-            }
-        }
-
-
-        ///dans l'autre sens
-        //on cherche toutes les composantes connexe (en tenant comte du ses des arcs) dans le sens inverse (avec les predecesseurs)
-        indiceSommet =indiceSommetBis; // on réinitialise l'indice
-        tabPredecesseurs[indiceSommet] = true;
-        pile.push(indiceSommet);
-        while(!pile.empty())
-        {
-            indiceSommet = pile.top();
-            pile.pop();
-
-            // boucle pour les sommets adjacents
-
-            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
-            {
-                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
-                if (it->second.m_to == indiceSommet)//si il pointe vers un autre sommet
-                {
-                    //on vérifie que le sommet n'est pas marqé
-                    if(tabPredecesseurs[it->second.m_from]==false)
-                    {
-                        //on marque le sommet
-                        tabPredecesseurs[it->second.m_from]= true;
-                        //on le push
-                        pile.push(it->second.m_from);
-                    }
-                }
-            }
-        }
-
-        ///on rempli le tab permettant de trouver les composantes fortement connexe et on affiche
-        //si on peut accéder depuis un sommet à un autre dans les deux sens (sucesseurs et predecesseurs), on a alors un circuit, et les deux sommets forment une composante fortement connexe
-
-        std::cout << "le(s) sommet(s) suivant(s) appartienne(nt) a une composante fortement connexe\n";
-        for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)
-        {
-            if(tabPredecesseurs[it->first] == true && tabSucesseurs[it->first] == true)//on regarde si le sommet est marqué sur les deux maps
-            {
-                tabComposanteFortementConnexe[it->first]= true;
-                dejaAffiche = false;
-
-                for (auto jt = verif.begin(); jt!=verif.end(); ++jt)
-                {
-                    if(verif[jt->first]==it->first &&tabComposanteFortementConnexe[it->first] )
-                        dejaAffiche=true;
-                }
-
-                if(!dejaAffiche)
-                    std::cout <<it->first<<" ";
-
-                verif.insert(std::pair<int, int>(it->first,it->first));///a quel endroit le ranger ?
-            }
-        }
-        std::cout<<std::endl;
-
-
-        ///on vide les deux autres (sucesseur et predecesseur)
-        for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)
-        {
-            tabSucesseurs.insert(std::pair<int, bool>(it->first,false));
-            tabPredecesseurs.insert(std::pair<int, bool>(it->first,false));
-        }
-
-        /// on regarde si tous les sommets on été marqués
-        algoTermine = true;
-        for (auto it = tabComposanteFortementConnexe.begin(); it!=tabComposanteFortementConnexe.end(); ++it)
-        {
-            if (tabComposanteFortementConnexe[it->first] == false)
-            {
-                algoTermine = false;
-                indiceSommetBis = it->first;///si il reste des sommets, on change de sommet
-                indiceSommet = it->first;
-            }
-        }
-    }
-}
-
-
 void Graph::evol_pop()
 {
 
@@ -1150,6 +1062,342 @@ float Graph::calcul_Coeff(int idx)
 
 ***********************************************************/
 
+void Graph::forte_conexite()
+{
+    ///déclaration des variables
+    std::map< int,bool> tabSucesseurs;
+    std::map<int,bool> tabPredecesseurs;
+    std::map<int,bool> tabComposanteFortementConnexe;
+
+    std::map<int,int> verif;
+    bool dejaAffiche;
+    bool premierPassage;
+
+    bool algoTermine ;
+    int indiceSommet, indiceSommetBis;
+    std::stack<int> pile;
+
+    std::vector<int> tabAffichage;
+    std::vector<int> tabAffichageBis;
+
+    int compteurDeComposanteFortementConnexe;
+    int tabAffichageSize;
+    int tabAffichageBisSize;
+
+    ///initialisation
+
+    for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)//on initialise les marques à false
+    {
+        tabSucesseurs.insert(std::pair<int, bool>(it->first,false));
+        tabPredecesseurs.insert(std::pair<int, bool>(it->first,false));
+        tabComposanteFortementConnexe.insert(std::pair<int, bool>(it->first,false));
+    }
+
+    algoTermine= false;
+    indiceSommetBis = 0;//on commence par le premier sommet arbitrairement--> attention si suppression
+    indiceSommet = indiceSommetBis;
+    pile.push(indiceSommet);
+    premierPassage = true;
+    compteurDeComposanteFortementConnexe =0;
+
+    ///début algo
+///----------------------------------------------------------------------------------------------------------------------------------------------bugs graphe1
+    while(!algoTermine)
+    {
+        /// dans le sens des succeseurs
+        //on cherche toutes les composantes connexe (en tenant comte du ses des arcs) dans le sens normal (avec les sucesseurs)
+
+
+        indiceSommet =indiceSommetBis; // on réinitialise l'indice
+        pile.push(indiceSommet);
+        tabSucesseurs[indiceSommet]=true;
+        //std::cout <<"sens : sucesseurs "<<std::endl;
+        while(!pile.empty())
+        {
+            indiceSommet = pile.top();
+            //std::cout <<"on se place sur le sommet "<<indiceSommet<<std::endl;
+            pile.pop();
+
+            // boucle pour les sommets adjacents
+
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
+            {
+                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
+                if (it->second.m_from == indiceSommet)//si il pointe vers un autre sommet
+                {
+                    //on vérifie que le sommet n'est pas marqé
+                    if(tabSucesseurs[it->second.m_to]==false)
+                    {
+                        //on marque le sommet
+                        tabSucesseurs[it->second.m_to]= true;
+                        //on le push
+                        //std::cout <<"on push "<<m_edges[it->first].m_to<<std::endl;
+                        pile.push(m_edges[it->first].m_to);
+
+                    }
+                }
+            }
+        }
+
+
+        ///dans l'autre sens
+        //on cherche toutes les composantes connexe (en tenant comte du ses des arcs) dans le sens inverse (avec les predecesseurs)
+        indiceSommet =indiceSommetBis; // on réinitialise l'indice
+        tabPredecesseurs[indiceSommet] = true;
+        pile.push(indiceSommet);
+       // std::cout <<"sens : predecesseur "<<std::endl;
+        while(!pile.empty())
+        {
+            indiceSommet = pile.top();
+           //std::cout <<"on se place sur le sommet "<<indiceSommet<<std::endl;
+            pile.pop();
+
+            // boucle pour les sommets adjacents
+
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
+            {
+                //si le sommet  est voisin et n'est pas marqué , on le marque et on l'enpile
+                if (it->second.m_to == indiceSommet)//si il pointe vers un autre sommet
+                {
+                    //on vérifie que le sommet n'est pas marqé
+                    if(tabPredecesseurs[it->second.m_from]==false)
+                    {
+                        //on marque le sommet
+                        tabPredecesseurs[it->second.m_from]= true;
+                        //on le push
+                        //std::cout <<"on push "<<m_edges[it->first].m_from<<std::endl;
+                        pile.push(m_edges[it->first].m_from);
+                        //pile.push(it->second.m_from);
+                    }
+                }
+            }
+        }
+
+        ///on rempli le tab permettant de trouver les composantes fortement connexe et on affiche
+        //si on peut accéder depuis un sommet à un autre dans les deux sens (sucesseurs et predecesseurs), on a alors un circuit, et les deux sommets forment une composante fortement connexe
+
+        std::cout << "le(s) sommet(s) suivant(s) appartienne(nt) a une composante fortement connexe\n";
+        int nombreDeSommets = 0;
+        for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)
+        {
+            if(tabPredecesseurs[it->first] == true && tabSucesseurs[it->first] == true)//on regarde si le sommet est marqué sur les deux maps
+            {
+                tabComposanteFortementConnexe[it->first]= true;
+                dejaAffiche = false;
+
+                for (auto jt = verif.begin(); jt!=verif.end(); ++jt)
+                {
+                    if(verif[jt->first]==it->first &&tabComposanteFortementConnexe[it->first] )
+                        dejaAffiche=true;
+                }
+
+                if(!dejaAffiche)
+                {
+                    std::cout <<it->first<<" ";
+                    tabAffichage.push_back(it->first);
+                    nombreDeSommets++;
+                }
+
+
+                verif.insert(std::pair<int, int>(it->first,it->first));///a quel endroit le ranger ?
+            }
+        }
+        std::cout<<std::endl;
+
+
+        //on remet les tableaux à false
+            for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)//on initialise les marques à false
+    {
+        tabSucesseurs[it->first]=false;
+        tabPredecesseurs[it->first]=false;
+    }
+///----------------------------------------------------------------------------------------------------------------------------------------------bugs graphe1
+
+
+        ///PREMIER PASSAGE D'ECRITURE : on efface ce que le fichier contient
+        if(premierPassage)
+        {
+            std::ofstream fichier("forte_composante_connexe.txt",std::ios::out|std::ios::trunc);
+            fichier<<nombreDeSommets<<std::endl;
+
+
+
+            for (int i = 0; i<tabAffichage.size(); i++)//on range les sommets
+            {
+                // std::cout <<"affichage tabAffichage " <<tabAffichage[i]<<std::endl;
+
+
+                fichier<< tabAffichage[i]
+                       <<" "<<m_vertices[ tabAffichage[i]].m_value
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->m_top_box.get_posx()
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->m_top_box.get_posy()
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->getthing()
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->m_img.m_pic_name
+                       <<  std::endl;
+            }
+
+            //on cherche les arêtes
+            int sommetdepart;
+            int sommetarrivee;
+            int nombrDAretes =0;
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
+            {
+                sommetdepart  = -1;
+                sommetarrivee = -1;
+
+
+                for(int i = 0; i<tabAffichage.size(); i++)
+                {
+
+                    if(tabAffichage[i] == m_edges[it->first].m_to )
+                        sommetarrivee = m_edges[it->first].m_to;
+                    if(tabAffichage[i] ==m_edges[it->first].m_from )
+                        sommetdepart = m_edges[it->first].m_from;
+                }
+                if(sommetdepart != -1 && sommetarrivee != -1)
+                {
+                    //int a = it->first;
+                    tabAffichageBis.push_back(it->first );
+                    nombrDAretes++;
+                }
+            }
+
+            fichier<<nombrDAretes<<std::endl;
+            nombrDAretes=0;
+
+            //lorsque l'on a toutes les arêtes on les range
+
+            for(int i = 0; i<tabAffichageBis.size(); i++)
+            {
+                fichier<< tabAffichageBis[i]
+                       << " "<< m_edges [tabAffichageBis[i] ].m_from
+                       << " " << m_edges[tabAffichageBis[i] ].m_to
+                       << " " << m_edges[tabAffichageBis[i] ].m_weight
+                       <<std::endl;
+            }
+
+            //on vide les deux tableaux
+            tabAffichageSize = tabAffichage.size();
+            tabAffichageBisSize = tabAffichageBis.size();
+            for (int i = 0; i<tabAffichageSize; i++)
+                tabAffichage.pop_back();
+            for (int i = 0; i<tabAffichageBisSize; i++)
+                tabAffichageBis.pop_back();
+
+            nombreDeSommets = 0;
+
+            fichier.close();
+
+            premierPassage = false;
+            compteurDeComposanteFortementConnexe++;
+        }
+
+
+
+
+        else /// LES AUTRES PASSAGES
+        {
+            std::ofstream fichier("forte_composante_connexe.txt",std::ios::out|std::ios::app);
+
+            fichier<<nombreDeSommets<<std::endl;
+
+            for (int i = 0; i<tabAffichage.size(); i++)//on range les sommets
+            {
+
+                fichier<< tabAffichage[i]
+                       <<" "<<m_vertices[ tabAffichage[i]].m_value
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->m_top_box.get_posx()
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->m_top_box.get_posy()
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->getthing()
+                       << " " <<  m_vertices[ tabAffichage[i]].m_interface->m_img.m_pic_name
+                       <<  std::endl;
+            }
+
+            //on cherche les arêtes
+            int sommetdepart;
+            int sommetarrivee;
+            int nombrDAretes =0;
+            for (auto it = m_edges.begin(); it!=m_edges.end(); ++it)
+            {
+                sommetdepart  = -1;
+                sommetarrivee = -1;
+
+
+                for(int i = 0; i<tabAffichage.size(); i++)
+                {
+
+                    if(tabAffichage[i] == m_edges[it->first].m_to )
+                        sommetarrivee = m_edges[it->first].m_to;
+                    if(tabAffichage[i] ==m_edges[it->first].m_from )
+                        sommetdepart = m_edges[it->first].m_from;
+                }
+                if(sommetdepart != -1 && sommetarrivee != -1)
+                {
+                    tabAffichageBis.push_back(it->first );
+                    nombrDAretes++;
+                }
+            }
+
+            fichier<<nombrDAretes<<std::endl;
+            nombrDAretes=0;
+
+            //lorsque l'on a toutes les arêtes on les range
+
+            for(int i = 0; i<tabAffichageBis.size(); i++)
+            {
+                fichier<< tabAffichageBis[i]
+                       << " "<< m_edges [tabAffichageBis[i] ].m_from
+                       << " " << m_edges[tabAffichageBis[i] ].m_to
+                       << " " << m_edges[tabAffichageBis[i] ].m_weight
+                       <<std::endl;
+            }
+
+            //on vide les deux tableaux
+            tabAffichageSize = tabAffichage.size();
+            tabAffichageBisSize = tabAffichageBis.size();
+            for (int i = 0; i<tabAffichageSize; i++)
+                tabAffichage.pop_back();
+            for (int i = 0; i<tabAffichageBisSize; i++)
+                tabAffichageBis.pop_back();
+
+            nombreDeSommets = 0;
+
+            fichier.close();
+            compteurDeComposanteFortementConnexe++;
+        }
+
+
+
+        ///on vide les deux autres (sucesseur et predecesseur)
+        for (auto it = m_vertices.begin(); it!=m_vertices.end(); ++it)
+        {
+            tabSucesseurs.insert(std::pair<int, bool>(it->first,false));
+            tabPredecesseurs.insert(std::pair<int, bool>(it->first,false));
+        }
+
+        /// on regarde si tous les sommets on été marqués
+        algoTermine = true;
+        for (auto it = tabComposanteFortementConnexe.begin(); it!=tabComposanteFortementConnexe.end(); ++it)
+        {
+            if (tabComposanteFortementConnexe[it->first] == false)
+            {
+                algoTermine = false;
+                indiceSommetBis = it->first;///si il reste des sommets, on change de sommet
+                indiceSommet = it->first;
+            }
+        }
+    }
+
+
+/// on inscrit le nombre de composante connexe dans le fichier (au début)
+
+    std::ofstream fichier("nombreDeComposanteConnexe.txt",std::ios::out|std::ios::trunc);
+    //fichier.seekp(10, std::ios::beg);
+    fichier<<compteurDeComposanteFortementConnexe<<std::endl;
+    fichier.close();
+
+    key[KEY_C] = true;
+}
 
 
 

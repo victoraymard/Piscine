@@ -1,0 +1,12 @@
+0
+0
+1
+6 1 195 52 sept orque.bmp
+0
+1
+3 1 577 578 quatre orque.bmp
+1
+10 3 3 1
+1
+2 1 492 430 trois orque.bmp
+0

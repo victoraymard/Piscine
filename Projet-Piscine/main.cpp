@@ -1,16 +1,14 @@
 #include "grman/grman.h"
 #include <iostream>
 #include "graph.h"
+
 void menu();
 int main()
 {
 
     /// A appeler en 1er avant d'instancier des objets graphiques etc...
     grman::init();
-    /*Graph graphe;
-    std::string nom1 = "graphe1";
-        graphe.recuperation(nom1);
-        graphe.k_connexite();*/
+
     /// Le nom du répertoire où se trouvent les images à charger
     grman::set_pictures_path("pics");
 
@@ -99,6 +97,12 @@ void menu()
                     blit(buffer, screen, 0,0,0,0,800, 600);
                     g.recuperation(nom1);
                 }
+                 if (key[KEY_C])
+                {
+                    key[KEY_C] = false;
+                    g.clear_map();
+                    g.recuperation_bis();
+                }
             }
         }
         else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 350< mouse_y && mouse_y < 380 )///graphe2
@@ -143,6 +147,12 @@ void menu()
                     blit(buffer, screen, 0,0,0,0,800, 600);
                     g.recuperation(nom2);
                 }
+                if (key[KEY_C])
+                {
+                    key[KEY_C] = false;
+                    g.clear_map();
+                    g.recuperation_bis();
+                }
             }
         }
         else if(mouse_b&1 && 246 < mouse_x &&  mouse_x < 452 && 440< mouse_y && mouse_y < 500 )///graphe3
@@ -186,6 +196,12 @@ void menu()
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
                     g.recuperation(nom3);
+                }
+                if (key[KEY_C])
+                {
+                    key[KEY_C] = false;
+                    g.clear_map();
+                    g.recuperation_bis();
                 }
             }
 ///-------------------------------------------------------------
