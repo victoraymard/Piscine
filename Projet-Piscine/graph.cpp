@@ -203,7 +203,7 @@ void Edge::post_update()
 /// éléments qui seront ensuite ajoutés lors de la mise ne place du Graphe
 GraphInterface::GraphInterface(int x, int y, int w, int h)
 {
-    m_top_box.set_dim(1000,740);
+    m_top_box.set_dim(800,600);
     m_top_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
 
     m_top_box.add_child(m_tool_box);
@@ -212,7 +212,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
     m_tool_box.set_bg_color(ROUGE);
 
     m_top_box.add_child(m_main_box);
-    m_main_box.set_dim(908,720);
+    m_main_box.set_dim(730,600);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
     m_main_box.set_bg_color(BLEUCLAIR);
 
@@ -477,13 +477,12 @@ void Graph::update(std::string nom)
         //k_connexite();
         key[KEY_M]=true;
     }
-     if (m_interface->m_bouton8.clicked())
-    {
+
         if(m_compteur % 50 == 0)
     {
         evol_pop();
     }
-    }
+
 
 
     if (*x > -1)
@@ -491,12 +490,6 @@ void Graph::update(std::string nom)
         enleversommet(*x);
     }
 
-//    if( *y > -1 && *z == true)
-//    {
-//        z = false;
-//        calcul_K(*y);
-//        calcul_Coeff(*y);
-//    }
 
 
     delete x;
@@ -508,7 +501,6 @@ void Graph::update(std::string nom)
 
 
     delete z;
-//evol_pop();
 
 }
 
@@ -762,7 +754,6 @@ void Graph::test_remove_edge(int eidx)
 void Graph::enleversommet(int vidx)
 {
     Vertex &remver = m_vertices.at(vidx);
-    std::cout << "  eeeeeeeeeeeeeeeeeeee           "  << std::endl;
 
 
     int i = remver.m_in.size()-1;
@@ -907,7 +898,7 @@ double K_pop(0);
 
         ///Si pas de predecesseur
         if (elem.second.m_in.empty())
-        { std::cout << elem.first << "   " << K_pop << "              rrrrrrrrrrrrrrrrrrrrrrr " << std::endl;
+        {
             if(K == 0)
                 temp[elem.first] = Nt - 0.000001;
 
