@@ -315,7 +315,7 @@ public :
 
 class Graph
 {
-<<<<<<< HEAD
+
     private :
 
         /// La "liste" des arêtes
@@ -360,7 +360,6 @@ class Graph
         void composante_fortement_connexe();
         std::vector<int> BFS();
         void ajoutsommet();
-=======
 private :
 
     /// La "liste" des arêtes

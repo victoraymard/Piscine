@@ -392,7 +392,8 @@ void Graph::update(std::string nom)
 
     delete x;
     delete y;
-    delete z;
+    delet
+    e z;
 evol_pop();
 }
 
