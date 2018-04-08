@@ -281,6 +281,14 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
     m_bouton7.add_child(m_bouton7_label);
     m_bouton7_label.set_message("k C");
 
+    ///bouton 8
+     m_boite_boutons.add_child(m_bouton8);
+    m_bouton8.set_frame(0,311,78,44);
+    m_bouton8.set_bg_color(ROUGE);
+
+    m_bouton8.add_child(m_bouton8_label);
+    m_bouton8_label.set_message("EVOL");
+
 }
 
 
@@ -412,6 +420,13 @@ void Graph::update(std::string nom)
         //k_connexite();
         key[KEY_M]=true;
     }
+     if (m_interface->m_bouton8.clicked())
+    {
+        if(m_compteur % 50 == 0)
+    {
+        evol_pop();
+    }
+    }
 
 
     if (*x > -1)
@@ -430,10 +445,7 @@ void Graph::update(std::string nom)
     delete x;
     delete y;
 
-    if(m_compteur % 50 == 0)
-    {
-        evol_pop();
-    }
+
 
 
 

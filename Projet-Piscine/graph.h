@@ -121,6 +121,8 @@ private :
     grman::WidgetBox m_nom_animal;
     grman::WidgetText m_nom_animal_label;
 
+
+
     int m_idx;
     std::string m_thing;
 public :
@@ -307,6 +309,9 @@ private :
 
     grman::WidgetButton m_bouton7;
     grman::WidgetText m_bouton7_label;
+
+    grman::WidgetButton m_bouton8;
+    grman::WidgetText m_bouton8_label;
 
     // A compléter éventuellement par des widgets de décoration ou
     // d'édition (boutons ajouter/enlever ...)
