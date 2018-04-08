@@ -63,6 +63,10 @@ void menu()
     std::string nom1 = "graphe1";
     std::string nom2 = "fortementconnexetest";
     std::string nom3 = "graphe2";
+    std::string nom4 = "menu.jpg"; ///inserer le nom de l'image de fond
+    std::string nom5 = "menu.jpg"; ///ici aussi
+    std::string nom6 = "graphe3.jpg"; ///ici encore
+
 
 
     while ( !key[KEY_ESC] )
@@ -84,7 +88,7 @@ void menu()
             if( secu == false)
             {
                 secu = true;
-                g.recuperation(nom1);
+                g.recuperation(nom1,nom4);
             }
             while (x == true)
             {
@@ -108,7 +112,7 @@ void menu()
                     g.clear_map();
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
-                    g.recuperation(nom1);
+                    g.recuperation(nom1,nom4);
                 }
                 if (key[KEY_N])
                 {
@@ -118,7 +122,7 @@ void menu()
                     g.clear_map();
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
-                    g.recuperation(nom1);
+                    g.recuperation(nom1,nom4);
                 }
                  if (key[KEY_C])
                 {
@@ -135,7 +139,7 @@ void menu()
             if( secu == false)
             {
                 secu = true;
-                g.recuperation(nom2);
+                g.recuperation(nom2,nom5);
             }
             while (x == true)
             {
@@ -158,7 +162,7 @@ void menu()
                     g.clear_map();
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
-                    g.recuperation(nom2);
+                    g.recuperation(nom2,nom5);
                 }
                 if (key[KEY_N])
                 {
@@ -168,7 +172,7 @@ void menu()
                     g.clear_map();
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
-                    g.recuperation(nom2);
+                    g.recuperation(nom2,nom5);
                 }
                 if (key[KEY_C])
                 {
@@ -185,7 +189,7 @@ void menu()
             if( secu == false)
             {
                 secu = true;
-                g.recuperation(nom3);
+                g.recuperation(nom3,nom6);
             }
             while (x == true)
             {
@@ -208,7 +212,7 @@ void menu()
                     g.clear_map();
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
-                    g.recuperation(nom3);
+                    g.recuperation(nom3,nom6);
                 }
                 if (key[KEY_N])
                 {
@@ -218,7 +222,7 @@ void menu()
                     g.clear_map();
                     blit(fond, buffer, 0,0,0,0,800, 600);
                     blit(buffer, screen, 0,0,0,0,800, 600);
-                    g.recuperation(nom3);
+                    g.recuperation(nom3,nom6);
                 }
                 if (key[KEY_C])
                 {

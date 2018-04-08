@@ -201,7 +201,7 @@ void Edge::post_update()
 
 /// Ici le constructeur se contente de préparer un cadre d'accueil des
 /// éléments qui seront ensuite ajoutés lors de la mise ne place du Graphe
-GraphInterface::GraphInterface(int x, int y, int w, int h)
+GraphInterface::GraphInterface(int x, int y, int w, int h, std::string nom)
 {
     m_top_box.set_dim(800,600);
     m_top_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
@@ -212,9 +212,8 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
     m_tool_box.set_bg_color(ROUGE);
 
     m_top_box.add_child(m_main_box);
-    m_main_box.set_dim(730,600);
     m_main_box.set_gravity_xy(grman::GravityX::Right, grman::GravityY::Up);
-    m_main_box.set_bg_color(BLEUCLAIR);
+    m_main_box.set_pic_name(nom);
 
     ///boite à boutons
     m_tool_box.add_child(m_boite_boutons);
@@ -293,9 +292,9 @@ GraphInterface::GraphInterface(int x, int y, int w, int h)
 
 
 
-void Graph::recuperation(std::string nom1)
+void Graph::recuperation(std::string nom1, std::string nom2)
 {
-    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
+    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600, nom2);
 
     std::string n = nom1 + ".txt" ;
 
@@ -338,7 +337,7 @@ void Graph::recuperation(std::string nom1)
 }
 void Graph::recuperation_bis()
 {
-    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
+//    m_interface = std::make_shared<GraphInterface>(50, 0, 750, 600);
 
     std::string n = "forte_composante_connexe.txt" ;
 

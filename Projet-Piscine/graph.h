@@ -284,7 +284,7 @@ private :
     grman::WidgetBox m_top_box;
 
     /// Dans cette boite seront ajoutés les (interfaces des) sommets et des arcs...
-    grman::WidgetBox m_main_box;
+    grman::WidgetImage m_main_box;
 
     /// Dans cette boite seront ajoutés des boutons de contrôle etc...
     grman::WidgetBox m_tool_box;
@@ -321,7 +321,7 @@ public :
 
     // Le constructeur met en place les éléments de l'interface
     // voir l'implémentation dans le .cpp
-    GraphInterface(int x, int y, int w, int h);
+    GraphInterface(int x, int y, int w, int h, std::string nom);
 };
 
 
@@ -362,7 +362,7 @@ class Graph
 
         /// La méthode update à appeler dans la boucle de jeu pour les graphes avec interface
         void update(std::string nom);
-        void recuperation(std::string nom);
+        void recuperation(std::string nom, std::string nom1);
         void recuperation_bis();
         void sauvegarde(std::map<int, Vertex> m_vertices, std::string nom);
         void remplissagemap(std::string path);
