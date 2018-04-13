@@ -1,39 +1,30 @@
 1
-0 37 692 38 vegetation vegetation.bmp
-0
-6
-5 246 108 1 tyrannosaure tyrannosaure.bmp
-7 10 522 221 stegosaure stegosaure.bmp
-8 108 451 378 abelisaure abelisaure.bmp
-9 576 159 479 velociraptor velociraptor.bmp
-11 246 721 567 daspletosaure daspletosaure.bmp
-12 486 19 583 deinonychus deinonychus.bmp
-10
-8 9 5 1
-9 9 8 1
-11 5 8 1
-13 11 5 1
-14 12 5 1
-15 8 5 1
-18 8 11 1
-19 8 7 1
-20 7 12 1
-23 12 9 1
-1
-10 156 1 339 saltopus saltopus.bmp
+0 3355 18 28 baleine baleine.bmp
 0
 1
-6 376 429 26 triceratops triceratops.bmp
+9 9.9935e+008 18 598 phytoplancton phytoplancton.bmp
 0
 1
-4 476 460 602 anatotitan anatotitan.bmp
+8 999987 498 598 zooplancton_herbivore zooplancton_herbivore.bmp
 0
 1
-3 476 156 200 diplodocus diplodocus.bmp
+7 0 198 478 zooplancton_carnivore zooplancton_carnivore.bmp
 0
 1
-2 476 749 257 deinonychus deinonychus.bmp
+6 6.5e+007 18 348 krill krill.bmp
 0
 1
-1 37 1 113 insectes insectes.bmp
+5 1e+008 748 478 calmar calmar.bmp
+0
+1
+4 5.14212e+006 248 198 manchot_adelie manchot_adelie.bmp
+0
+1
+3 413642 698 218 leopard_des_mers leopard_des_mers.bmp
+0
+1
+2 4.35408e+007 448 348 phoque phoque.bmp
+0
+1
+1 87753 498 28 orque orque.bmp
 0

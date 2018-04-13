@@ -1,0 +1,15 @@
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:833: warning: argument 'aucun' of command @param is not found in the argument list of Graph::clear_map()
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:833: warning: argument 'la' of command @param is not found in the argument list of Graph::clear_map()
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:1022: warning: argument 'aucun' of command @param is not found in the argument list of Graph::forte_conexite()
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:1022: warning: argument 'la' of command @param is not found in the argument list of Graph::forte_conexite()
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:293: warning: argument 'le' of command @param is not found in the argument list of Graph::recuperation(std::string nom1, std::string nom2)
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.h:365: warning: The following parameters of Graph::recuperation(std::string nom1, std::string nom2) are not documented:
+  parameter 'nom1'
+  parameter 'nom2'
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:344: warning: argument 'le' of command @param is not found in the argument list of Graph::recuperation_bis(std::string nom)
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.h:366: warning: The following parameters of Graph::recuperation_bis(std::string nom) are not documented:
+  parameter 'nom'
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:561: warning: argument 'une' of command @param is not found in the argument list of Graph::sauvegarde_bis(std::map< int, Vertex > m_vertices)
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.cpp:561: warning: argument 'une' of command @param is not found in the argument list of Graph::sauvegarde_bis(std::map< int, Vertex > m_vertices)
+C:/Users/victo/Piscine/Piscine-Projet-ECE/Projet-Piscine/graph.h:383: warning: The following parameters of Graph::sauvegarde_bis(std::map< int, Vertex > m_vertices) are not documented:
+  parameter 'm_vertices'

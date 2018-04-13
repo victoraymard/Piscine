@@ -1,4 +1,3 @@
-
 ///AYMARD                 Projet d'informatique                       TD02
 ///BALLAND                 Théorie des Graphes
 ///CARABIN                   ING2,semestre 2
@@ -16,8 +15,17 @@
 
 
 /// Guillaume Carabin : A travaillé en parallèle avec Hugo Dores et Jean-Baptiste Scelles pour certaines fonctions
+///----------------------------------------------------------------------------------------------------------------------------------
 
 
+
+/*!
+*\file main.cpp
+*\brief contrôle le programme
+*\author Aymard, Balland, Carrabin
+*\date 13.04.2018
+*\version
+*/
 
 
 
@@ -39,7 +47,7 @@ int main()
 
     grman::fermer_allegro();
 
-    //nettoyage du terminal
+    //! nettoyage du terminal
     system("cls");
     std::cout <<"Au revoir"<<std::endl;
 
@@ -71,7 +79,6 @@ void menu()
 
     while ( !key[KEY_ESC] )
     {
-        ///---------------------------------------------------------------------
 
         x= false;
 
@@ -231,7 +238,6 @@ void menu()
                     g.recuperation_bis(nom3);
                 }
             }
-///-------------------------------------------------------------
         }
     }
 }
