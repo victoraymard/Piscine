@@ -12,8 +12,9 @@
 
 
 /*!
-*\file main.cpp
-*\brief contrôle le programme
+*\file graph.cpp
+*\brief contient les méthodes permettant de
+        faire des actions sur les réseaux
 *\author Aymard, Balland, Carrabin
 *\date 13.04.2018
 *\version
@@ -22,12 +23,12 @@
 
 namespace patch
 {
-template < typename T > std::string to_string( const T& n )
-{
-    std::ostringstream stm ;
-    stm << n ;
-    return stm.str() ;
-}
+    template < typename T > std::string to_string( const T& n )
+    {
+        std::ostringstream stm ;
+        stm << n ;
+        return stm.str() ;
+    }
 }
 
 /***************************************************
@@ -48,7 +49,7 @@ VertexInterface::VertexInterface(int idx, int x, int y,  int mini,  int maxi, st
 
     // Le slider de réglage de valeur
     m_top_box.add_child( m_slider_value );
-    m_slider_value.set_range(mini, maxi);  // Valeurs arbitraires, à adapter...
+    m_slider_value.set_range(mini, maxi);
     m_slider_value.set_dim(20,80);
     m_slider_value.set_gravity_xy(grman::GravityX::Left, grman::GravityY::Up);
 
@@ -90,10 +91,6 @@ VertexInterface::VertexInterface(int idx, int x, int y,  int mini,  int maxi, st
     m_nom_animal.add_child(m_nom_animal_label);
     m_nom_animal_label.set_message(thing_name);
     m_nom_animal_label.set_color(MARRONSOMBRE);
-
-
-
-
 }
 
 void Vertex::setarc_entrant(int numero_de_larc)
@@ -292,7 +289,7 @@ GraphInterface::GraphInterface(int x, int y, int w, int h, std::string nom)
 *\fn void Graph::recuperation(std::string nom1, std::string nom2)
 *\brief lecture des données et entransplantation de celles ci dans
         le programme avec affichage
-*\param le nom du fichier texte et celui du fond
+*\param nom1, nom2
 *\return la méthode ne retourne rien.
 */
 void Graph::recuperation(std::string nom1, std::string nom2)
@@ -343,7 +340,7 @@ void Graph::recuperation(std::string nom1, std::string nom2)
 *\fn void Graph::recuperation_bis(std::string nom)
 *\brief chargement du fichier dans lequel sont enregistré les
         composantes fortement connexe du graphe étudié
-*\param le nom du fichier image pour le fond
+*\param nom
 *\return la méthode ne retourne rien.
 */
 void Graph::recuperation_bis(std::string nom)
@@ -544,10 +541,10 @@ void Graph::add_interfaced_edge(int idx, int id_vert1, int id_vert2, double weig
 
 
 /**
-*\fn void Graph::sauvegarde_bis(std::map<int, Vertex> m_vertices)
+*\fn void Graph::sauvegarde(std::map<int, Vertex> m_vertices, std::string nom)
 *\brief utilisé pour l'enregistrement des données dans le fichier qui a
         été utilisé pour charger les données
-*\param une map de sommets, le nom du fichier
+*\param m_vertices, nom
 *\return la méthode ne retourne rien.
 */
 void Graph::sauvegarde(std::map<int, Vertex> m_vertices, std::string nom)
@@ -582,7 +579,7 @@ void Graph::sauvegarde(std::map<int, Vertex> m_vertices, std::string nom)
 /**
 *\fn void Graph::sauvegarde_bis(std::map<int, Vertex> m_vertices)
 *\brief enregistrement des données dans un fichier choisi par l'utilisateur
-*\param une map de sommets
+*\param m_vertices
 *\return la méthode ne retourne rien.
 */
 void Graph::sauvegarde_bis(std::map<int, Vertex> m_vertices)
@@ -617,6 +614,12 @@ void Graph::sauvegarde_bis(std::map<int, Vertex> m_vertices)
 }
 
 
+/**
+*\fn void Graph::remplissagemap(std::string path)
+*\brief permet de créer des variables de classes filles de Vertex
+*\param path
+*\return ne retourne rien
+*/
 void Graph::remplissagemap(std::string path)  /// remplissage de la map de sommet à partir dun fichier du type reseau trophique1.txt
 {
     /// il faut absolument mettre | dans chaque ligne entre les arcs entrants et sortants sinon on a une boucle infini
@@ -718,6 +721,12 @@ void Graph::remplissagemap(std::string path)  /// remplissage de la map de somme
         m_vertices[y]=vecteur_de_sommet_transitoire[y];
 }
 
+/**
+*\fn void Graph::test_remove_edge(int eidx)
+*\brief vérifications avant de supprimer une arête
+*\param eidx
+*\return ne retourne rien
+*/
 void Graph::test_remove_edge(int eidx)
 {
     /// référence vers le Edge à enlever
@@ -763,7 +772,12 @@ void Graph::test_remove_edge(int eidx)
 
 }
 
-
+/**
+*\fn void Graph::enleversommet(int vidx)
+*\brief permet d'enlever un sommet du réseau étudié
+*\param vidx
+*\return la méthode ne retourne rien.
+*/
 void Graph::enleversommet(int vidx)
 {
     Vertex &remver = m_vertices.at(vidx);
@@ -792,7 +806,11 @@ void Graph::enleversommet(int vidx)
 }
 
 
-
+/**
+*\fn void Graph::add_edge()
+*\brief permet d'ajouter une arête entre deux sommets du réseau étudié
+*\return la méthode ne retourne rien.
+*/
 void Graph::add_edge()
 {
     int n =0, sommet1, sommet2;
@@ -832,7 +850,6 @@ void Graph::add_edge()
 *\fn void Graph::clear_map()
 *\brief permet d'effacer les attributs m_vertices et m_edges pour éviter les
         fuites mémoires en cas de changement de réseau
-*\param aucun, la méthode travail à partir des éléments du graph
 *\return la méthode ne retourne rien.
 */
 void Graph::clear_map()
@@ -841,7 +858,11 @@ void Graph::clear_map()
     m_edges.clear();
 }
 
-
+/**
+*\fn void Graph::ajoutsommet()
+*\brief permet d'ajouter un sommet au réseau étudié
+*\return la méthode ne retourne rien.
+*/
 void Graph::ajoutsommet()
 {
 
@@ -878,7 +899,12 @@ void Graph::ajoutsommet()
 
 
 
-
+/**
+*\fn void Graph::evol_pop()
+*\brief permet de calculer l'évolution des
+        populations au cours du temps
+*\return ne retourne rien
+*/
 void Graph::evol_pop()
 {
 
@@ -964,6 +990,12 @@ void Graph::evol_pop()
         elem.second.m_value = temp[elem.first];
 }
 
+/**
+*\fn float Graph::calcul_K(int idx)
+*\brief permet de calculer la capacité de portage de l'environnement
+*\param idx
+*\return retourne le K
+*/
 float Graph::calcul_K(int idx)
 {
     Vertex &som = m_vertices.at(idx);
@@ -982,6 +1014,12 @@ float Graph::calcul_K(int idx)
     return K;
 }
 
+/**
+*\fn float Graph::calcul_Coeff(int idx)
+*\brief permet de calculer le coeffiscient d'influence entre deux espèces
+*\param idx
+*\return retourne le coeffiscient
+*/
 float Graph::calcul_Coeff(int idx)
 {
 
@@ -1019,8 +1057,8 @@ float Graph::calcul_Coeff(int idx)
 
 /**
 *\fn void Graph::forte_conexite()
-*\brief permet de déterminer et d'afficher les composantes fortement connexes d'un graphe
-*\param aucun, la méthode travail à partir des éléments du graph
+*\brief permet de déterminer et d'afficher les
+        composantes fortement connexes d'un graphe
 *\return la méthode ne retourne rien.
 */
 void Graph::forte_conexite()
@@ -1342,7 +1380,12 @@ void Graph::forte_conexite()
     */
 }
 
-
+/**
+*\fn int Graph::k_connexite()
+*\brief permet de déterminer le nombre de sommet(s) minimun à
+         enlever pour que le graph ne soit plus connexe
+*\return la méthode retourne 0
+*/
 int Graph::k_connexite()
 {
     std::map<int,Vertex>map_de_sauvegarde=m_vertices; /// on sauvegarde m_vertices et m_edges
@@ -1448,7 +1491,12 @@ int Graph::k_connexite()
 
 
 
-
+/**
+*\fn void Graph::bfs()
+*\brief bfs sur graph orienté (en tenant compte du sens des arcs)
+         cette méthode a servi de base à celle de la forte connexité
+*\return la méthode ne retourne rien
+*/
 void Graph::bfs()
 {
 
@@ -1517,7 +1565,11 @@ void Graph::bfs()
 
 
 
-
+/**
+*\fn std::vector<int> Graph::BFS()
+*\brief algorithme du BFS
+*\return retourne un vecteur de int contenant la composante connexe
+*/
 std::vector<int> Graph::BFS()   /// BFS qui suppose que le graphe de base et entierement connexe et renvoie un vecteur de int contenant la compo connexe
 {
     /// si besoin ya vite moyen de rajouter quelque chose pour quils donnent toutes les compos connexes du graphe
@@ -1560,7 +1612,6 @@ std::vector<int> Graph::BFS()   /// BFS qui suppose que le graphe de base et ent
         /// eventuellement :
     } ///checker si tous les sommets sont marqués
     return vecteur;
-
 }
 
 

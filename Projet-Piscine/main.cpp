@@ -54,7 +54,11 @@ int main()
     return 0;
 }
 
-
+/**
+*\fn void menu()
+*\brief interface et gestion du menu
+*\return la fonction ne retourne rien.
+*/
 void menu()
 {
 
